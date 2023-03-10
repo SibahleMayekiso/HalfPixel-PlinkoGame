@@ -33,158 +33,31 @@ for (let row = 2; row < n; row++) {
         container.addChild(pin);
     }
 }
+let pinRowCount = 2;
 
-//Columns 2
-for (let row = 2; row < n; row++) {
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 - 50, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
+while (pinRowCount < 9) {
+    for (let row = pinRowCount; row < n; row++) {
+        for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
+    
+            const pin = new PIXI.Graphics()
+            .beginFill(0xFFFFFF)
+            .drawCircle(500 - (50 * pinRowCount), 250 + (row * 50), 5)
+            .endFill()
+    
+            container.addChild(pin);
+        }
+        for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
+    
+            const pin = new PIXI.Graphics()
+            .beginFill(0xFFFFFF)
+            .drawCircle(400 + (50 * pinRowCount), 250 + (row * 50), 5)
+            .endFill()
+    
+            container.addChild(pin);
+        }
     }
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
 
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 + 50, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-}
-
-//Columns 3
-for (let row = 3; row < n; row++) {
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 - 100, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 + 100, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-}
-
-//Columns 4
-for (let row = 4; row < n; row++) {
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 - 150, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 + 150, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-}
-
-//Columns 4
-for (let row = 5; row < n; row++) {
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 - 200, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 + 200, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-}
-
-
-//Columns 5
-for (let row = 6; row < n; row++) {
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 - 250, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 + 250, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-}
-//Columns 5
-for (let row = 7; row < n; row++) {
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 - 300, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 + 300, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-}
-//Columns 5
-for (let row = 8; row < n; row++) {
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 - 350, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450 + 350, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
+    pinRowCount++;
 }
 
 //Ball
