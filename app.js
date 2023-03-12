@@ -1,84 +1,107 @@
 import * as PIXI from "./node_modules/pixi.js/dist/pixi.mjs";
 
-const app = new PIXI.Application({ 
-    width: 900,
-    height: 900,
-    background: '#0x004677' 
+const app = new PIXI.Application({
+  width: 500,
+  height: 600,
+  backgroundColor: 0x0a000f,
 });
+
 document.body.appendChild(app.view);
 
-const container = new PIXI.Container();
+//prettier-ignore
+const gameBoardMap = [
+    [' ', ' ', ' ', ' ', ' ', '0', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', '*', ' ', '*', ' ', '*', ' ', ' ', ' '],
+    [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
+    [' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' '],
+    ['*', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', '*'],
+    [' ', '_', ' ', '_', ' ', '_', ' ', '_', ' ', '_', ' '],
+  ];
 
+const container = new PIXI.Container();
 app.stage.addChild(container);
 
-const hole = new PIXI.Graphics()
-.beginFill(0x11191F)
-.drawCircle(450, 300, 20)
-.endFill()
+class GameBoard {
+  constructor(width, height) {
+    this._width = width;
+    this._height = height;
+  }
 
-container.addChild(hole);
+  SetUpGameBoard() {
+    let boardMidpointXaxis = this._width / 2;
 
-const n = 9;
-let pins = "";
+    gameBoardMap.forEach((row, rowIndex) => {
+      row.forEach((column, columnIndex) => {
+        switch (column) {
+          case "0":
+            const hole = new PIXI.Graphics()
+              .beginFill(0xdddddd)
+              .drawCircle(
+                boardMidpointXaxis + 50 * rowIndex,
+                this._height / 6,
+                15
+              )
+              .endFill();
 
-//Middle Column 
-for (let row = 2; row < n; row++) {
-    for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
+            container.addChild(hole);
+            break;
 
-        const pin = new PIXI.Graphics()
-        .beginFill(0xFFFFFF)
-        .drawCircle(450, 250 + (row * 50), 5)
-        .endFill()
-
-        container.addChild(pin);
-    }
-}
-let pinRowCount = 2;
-
-while (pinRowCount < 9) {
-    for (let row = pinRowCount; row < n; row++) {
-        for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-    
+          case "*":
             const pin = new PIXI.Graphics()
-            .beginFill(0xFFFFFF)
-            .drawCircle(500 - (50 * pinRowCount), 250 + (row * 50), 5)
-            .endFill()
-    
-            container.addChild(pin);
-        }
-        for (let pinIndex = 0; pinIndex < 2 * row - 1 ; pinIndex++) {
-    
-            const pin = new PIXI.Graphics()
-            .beginFill(0xFFFFFF)
-            .drawCircle(400 + (50 * pinRowCount), 250 + (row * 50), 5)
-            .endFill()
-    
-            container.addChild(pin);
-        }
-    }
+              .beginFill(0xffffff)
+              .drawCircle(50 * columnIndex, 100 + 50 * rowIndex, 5)
+              .endFill();
 
-    pinRowCount++;
+            container.addChild(pin);
+            break;
+
+          case "_":
+            const bucket = new PIXI.Graphics()
+              .beginFill(0xf0d020)
+              .lineStyle(5, 0xb7312c)
+              .drawRect(50 * columnIndex - 25, 100 + 50 * rowIndex, 50, 50, 2)
+              .endFill();
+
+            container.addChild(bucket);
+            break;
+
+          default:
+            break;
+        }
+      });
+    });
+  }
 }
 
-//Ball
-const ball = new PIXI.Graphics()
-.beginFill(0xB7312C)
-.drawCircle(450, 300, 10)
+const board = new GameBoard(500, 600);
 
-container.addChild(ball);
+board.SetUpGameBoard();
 
-//Ball
-for (let index = 0; index < 14; index++) {
-    const bucket = new PIXI.Graphics()
-    .beginFill(0xF0D020)
-    .lineStyle(1, 0xB7312C)
-    .drawRect(110 + (50 * index), 675, 30, 50)
+class GameAsset {
+  //   constructor(positionX, positonY, height, width) {
+  //     this.positionX = positionX;
+  //     this.positionY = positionY;
+  //     this.height = height;
+  //     this.width = width;
+  //   }
 
-    container.addChild(bucket);
+  GeneratePuck() {
+    const puck = new PIXI.Graphics()
+      .beginFill(Math.random() * 0xffffff)
+      .drawCircle(
+        Math.random() * app.screen.width,
+        Math.random() * app.screen.height,
+        10
+      )
+      .endFill();
+
+    container.addChild(puck);
+  }
 }
 
+app.ticker.add((delta) => loop(delta));
 
-// Listen for animate update
-app.ticker.add((delta) => {
-
-});
+function loop(delta) {
+  const asset = new GameAsset();
+  asset.GeneratePuck();
+}
