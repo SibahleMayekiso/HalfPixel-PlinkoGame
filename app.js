@@ -58,7 +58,7 @@ class GameBoard {
           case "_":
             const bucket = new PIXI.Graphics()
               .beginFill(0xf0d020)
-              .lineStyle(5, 0x4B0008)
+              .lineStyle(5, 0x4b0008)
               .drawRect(50 * columnIndex - 25, 100 + 50 * rowIndex, 50, 50, 2)
               .endFill();
 
@@ -73,7 +73,7 @@ class GameBoard {
   }
 }
 
-
+const coinPuck = PIXI.Sprite.from("./assets/Coin Pack/Coin9.png");
 
 class GameAsset {
   static velocityX = 0;
@@ -85,25 +85,32 @@ class GameAsset {
   }
 
   GeneratePuck() {
-    const coinPuck = PIXI.Sprite.from('./assets/Coin Pack/Coin9.png')
-    container.addChild(coinPuck);
-
+    coinPuck.anchor.set(0.5);
     coinPuck.width = 25;
     coinPuck.height = 25;
 
     coinPuck.x = this.positionX;
     coinPuck.y = this.positionY;
+
+    container.addChild(coinPuck);
   }
 
   UpdatePosition() {
     GameAsset.velocityX++;
     GameAsset.velocityY++;
 
-    this.positionX = 238;
-    this.positionY = 100 + GameAsset.velocityY * 10;
+    coinPuck.x = 250;
+    coinPuck.y = 100 + GameAsset.velocityY;
 
-    console.log(`xAxis: ${this.positionX}, yAxis: ${this.positionY}`);
+    this.positionX = coinPuck.x;
+    this.positionY = coinPuck.y;
 
+    console.log(`xAxis: ${this._positionX}, yAxis: ${this.positionY}`);
+    // app.render();
+    this.GeneratePuck();
+  }
+
+  Reset() {
     this.GeneratePuck();
   }
 }
@@ -111,7 +118,9 @@ class GameAsset {
 const board = new GameBoard(500, 600);
 board.SetUpGameBoard();
 
-const startButtonSprite = PIXI.Sprite.from('./assets/vecteezy_start-button.png')
+const startButtonSprite = PIXI.Sprite.from(
+  "./assets/vecteezy_start-button.png"
+);
 container.addChild(startButtonSprite);
 
 startButtonSprite.width = 150;
@@ -123,17 +132,28 @@ startButtonSprite.interactive = true;
 
 const asset = new GameAsset(250, 100);
 
-startButtonSprite.on('pointerdown', () => {
-  setInterval(GameLoop, 1000 / 5);
-})
-
 let score = 0;
+let coins = 10;
+
+startButtonSprite.on("pointerdown", () => {
+  score++;
+  coins--;
+  coinPuck.y = 100;
+
+  document.getElementById("player-score").innerHTML = `Score : ${score}`;
+  document.getElementById("player-coins").innerHTML = `Coins : ${coins}`;
+
+  setInterval(GameLoop, 1000 / 60);
+});
 
 function GameLoop() {
-  if (asset._positionY < app.screen.height) {
-    score++
-    document.getElementById("player-score").innerHTML = `Score : ${score}`
+  if (coinPuck.position.y < 375 && coins >= 0) {
     asset.UpdatePosition();
-
+  } else {
+    container.removeChild(coinPuck);
   }
+
+  asset.Reset();
 }
+
+// setInterval(GameLoop, 5000 / 60);
