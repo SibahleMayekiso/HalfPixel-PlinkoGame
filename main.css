@@ -1,0 +1,10 @@
+html, body{
+    margin: 0;
+}
+
+#score-board{
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    height: 50px;
+}
