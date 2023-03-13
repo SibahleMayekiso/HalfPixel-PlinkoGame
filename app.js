@@ -14,7 +14,7 @@ const gameBoardMap = [
     [' ', ' ', ' ', '*', ' ', '*', ' ', '*', ' ', ' ', ' '],
     [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
     [' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' '],
-    ['*', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', '*'],
+  [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
     [' ', '_', ' ', '_', ' ', '_', ' ', '_', ' ', '_', ' '],
   ];
 
@@ -28,7 +28,7 @@ class GameBoard {
   }
 
   SetUpGameBoard() {
-    let boardMidpointXaxis = this._width / 2;
+    const boardMidpointXaxis = this._width / 2;
 
     gameBoardMap.forEach((row, rowIndex) => {
       row.forEach((column, columnIndex) => {
@@ -58,7 +58,7 @@ class GameBoard {
           case "_":
             const bucket = new PIXI.Graphics()
               .beginFill(0xf0d020)
-              .lineStyle(5, 0xb7312c)
+              .lineStyle(5, 0x4B0008)
               .drawRect(50 * columnIndex - 25, 100 + 50 * rowIndex, 50, 50, 2)
               .endFill();
 
@@ -73,35 +73,67 @@ class GameBoard {
   }
 }
 
-const board = new GameBoard(500, 600);
 
-board.SetUpGameBoard();
 
 class GameAsset {
-  //   constructor(positionX, positonY, height, width) {
-  //     this.positionX = positionX;
-  //     this.positionY = positionY;
-  //     this.height = height;
-  //     this.width = width;
-  //   }
+  static velocityX = 0;
+  static velocityY = 0;
+
+  constructor(positionX, positionY) {
+    this._positionX = positionX;
+    this._positionY = positionY;
+  }
 
   GeneratePuck() {
-    const puck = new PIXI.Graphics()
-      .beginFill(Math.random() * 0xffffff)
-      .drawCircle(
-        Math.random() * app.screen.width,
-        Math.random() * app.screen.height,
-        10
-      )
-      .endFill();
+    const coinPuck = PIXI.Sprite.from('./assets/Coin Pack/Coin9.png')
+    container.addChild(coinPuck);
 
-    container.addChild(puck);
+    coinPuck.width = 25;
+    coinPuck.height = 25;
+
+    coinPuck.x = this.positionX;
+    coinPuck.y = this.positionY;
+  }
+
+  UpdatePosition() {
+    GameAsset.velocityX++;
+    GameAsset.velocityY++;
+
+    this.positionX = 238;
+    this.positionY = 100 + GameAsset.velocityY * 10;
+
+    console.log(`xAxis: ${this.positionX}, yAxis: ${this.positionY}`);
+
+    this.GeneratePuck();
   }
 }
 
-app.ticker.add((delta) => loop(delta));
+const board = new GameBoard(500, 600);
+board.SetUpGameBoard();
 
-function loop(delta) {
-  const asset = new GameAsset();
-  asset.GeneratePuck();
+const startButtonSprite = PIXI.Sprite.from('./assets/vecteezy_start-button.png')
+container.addChild(startButtonSprite);
+
+startButtonSprite.width = 150;
+startButtonSprite.height = 75;
+
+startButtonSprite.x = 175;
+
+startButtonSprite.interactive = true;
+
+const asset = new GameAsset(250, 100);
+
+startButtonSprite.on('pointerdown', () => {
+  setInterval(GameLoop, 1000 / 5);
+})
+
+let score = 0;
+
+function GameLoop() {
+  if (asset._positionY < app.screen.height) {
+    score++
+    document.getElementById("player-score").innerHTML = `Score : ${score}`
+    asset.UpdatePosition();
+
+  }
 }
