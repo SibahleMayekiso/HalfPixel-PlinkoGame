@@ -1,4 +1,5 @@
 import * as PIXI from "./node_modules/pixi.js/dist/pixi.mjs";
+import { CalculatNavigationPath } from "./GameLogic.js";
 
 const app = new PIXI.Application({
   width: 500,
@@ -20,7 +21,6 @@ const gameBoardMap = [
   [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
     [' ', '_', ' ', '_', ' ', '_', ' ', '_', ' ', '_', ' '],
   ];
-
 
 class GameBoard {
   constructor(width, height) {
@@ -97,7 +97,7 @@ class GameAsset {
   }
 
   UpdatePosition() {
-    this.GeneratePuck();
+    // this.GeneratePuck();
 
     GameAsset.velocityX++;
     GameAsset.velocityY++;
@@ -110,6 +110,11 @@ class GameAsset {
     console.log(`Velocity Y: ${GameAsset.velocityY}`);
   }
 
+  MovePosition() {
+    coinPuck.x = this.positionX;
+    coinPuck.y = this.positionY;
+  }
+
   ResetPostion() {
     this.positionX = 250;
     this.positionY = 100;
@@ -117,7 +122,6 @@ class GameAsset {
     GameAsset.velocityX = 5;
     GameAsset.velocityY = 5;
   }
-
 }
 
 const board = new GameBoard(500, 600);
@@ -133,7 +137,9 @@ let coins = 10;
 startButtonSprite.on("pointerdown", () => {
   asset.ResetPostion();
 
-  asset.GeneratePuck();
+  const path = CalculatNavigationPath(3);
+  MovePuckOnPath(path);
+
   console.log(asset);
 
   score++;
@@ -142,12 +148,11 @@ startButtonSprite.on("pointerdown", () => {
   if (coins <= 0) {
     console.log("Game Over! Insufficient Coins");
     document.getElementById("player-coins").style.color = "red";
-  }
-  else {
+  } else {
     document.getElementById("player-score").innerHTML = `Score : ${score}`;
     document.getElementById("player-coins").innerHTML = `Coins : ${coins}`;
 
-    setInterval(GameLoop, 1000 / 60);
+    // setInterval(GameLoop, 1000 / 5);
   }
 });
 
@@ -169,8 +174,26 @@ function CreateStartButton() {
 
 function GameLoop() {
   if (coinPuck.position.y < 375 && coins >= 0) {
-    asset.UpdatePosition();
+    // asset.UpdatePosition();
   } else {
     container.removeChild(coinPuck);
   }
+}
+
+function MovePuckOnPath(path) {
+  asset.GeneratePuck();
+
+  path.forEach((element, index) => {
+    setTimeout(() => {
+      let axisValues = element.split(";");
+      console.log(axisValues);
+
+      asset.positionX = axisValues[0];
+      asset.positionY = axisValues[1];
+      console.log(
+        `Current position x & y: ${asset.positionX}, ${asset.positionY}`
+      );
+      asset.MovePosition();
+    }, 500 * index);
+  });
 }
