@@ -21,7 +21,13 @@ const bucketsPaths = {
     bucketFivePaths: [
         ['R', 'R', 'R', 'R']
     ]
+}
 
+function GetRandomPath(bucketPaths) {
+    let randomNumber = Math.floor(Math.random() * 4);
+    const numberOfPaths = bucketPaths.length;
+
+    return numberOfPaths === 1 ? bucketPaths[0] : bucketPaths[randomNumber];
 }
 
 function GetBucketPath(bucketNumber, bucketsPaths) {
@@ -43,13 +49,19 @@ function GetBucketPath(bucketNumber, bucketsPaths) {
     }
 }
 
-function GetRandomPath(bucketPaths) {
-    let randomNumber = Math.floor(Math.random() * 4);
+function NavigateBucketPath(bucketNumber) {
+    let pathCoordinates = [];
+    let postionX = 250;
+    let positionY = 100;
 
-    const numberOfPaths = bucketPaths.length;
-    return (numberOfPaths == 1) ? bucketPaths[0] : bucketPaths[randomNumber]
+    const path = GetBucketPath(bucketNumber, bucketsPaths);
+
+    for (let index = 0; index < path.length; index++) {
+        path[index] === 'L' ? (postionX -= 50) : (postionX += 50);
+        positionY += 50;
+
+        pathCoordinates.push(`${postionX};${positionY}`);
+    }
+
+    return pathCoordinates;
 }
-
-// function GetRandomNumberInRange(minNumber, maxNumber) {
-//     return Math.floor(math.Random() * (max - min + 1) + min)
-// }
