@@ -8,6 +8,9 @@ const app = new PIXI.Application({
 
 document.body.appendChild(app.view);
 
+const container = new PIXI.Container();
+app.stage.addChild(container);
+
 //prettier-ignore
 const gameBoardMap = [
     [' ', ' ', ' ', ' ', ' ', '0', ' ', ' ', ' ', ' ', ' '],
@@ -18,8 +21,6 @@ const gameBoardMap = [
     [' ', '_', ' ', '_', ' ', '_', ' ', '_', ' ', '_', ' '],
   ];
 
-const container = new PIXI.Container();
-app.stage.addChild(container);
 
 class GameBoard {
   constructor(width, height) {
@@ -80,8 +81,8 @@ class GameAsset {
   static velocityY = 0;
 
   constructor(positionX, positionY) {
-    this._positionX = positionX;
-    this._positionY = positionY;
+    this.positionX = positionX;
+    this.positionY = positionY;
   }
 
   GeneratePuck() {
@@ -96,39 +97,33 @@ class GameAsset {
   }
 
   UpdatePosition() {
+    this.GeneratePuck();
+
     GameAsset.velocityX++;
     GameAsset.velocityY++;
 
     coinPuck.x = 250;
-    coinPuck.y = 100 + GameAsset.velocityY;
+    coinPuck.y += GameAsset.velocityY;
 
-    this.positionX = coinPuck.x;
-    this.positionY = coinPuck.y;
-
-    console.log(`xAxis: ${this._positionX}, yAxis: ${this.positionY}`);
-    // app.render();
-    this.GeneratePuck();
+    //Test output
+    console.log(`xAxis: ${this.positionX}, yAxis: ${this.positionY}`);
+    console.log(`Velocity Y: ${GameAsset.velocityY}`);
   }
 
-  Reset() {
-    this.GeneratePuck();
+  ResetPostion() {
+    this.positionX = 250;
+    this.positionY = 100;
+
+    GameAsset.velocityX = 5;
+    GameAsset.velocityY = 5;
   }
+
 }
 
 const board = new GameBoard(500, 600);
 board.SetUpGameBoard();
 
-const startButtonSprite = PIXI.Sprite.from(
-  "./assets/vecteezy_start-button.png"
-);
-container.addChild(startButtonSprite);
-
-startButtonSprite.width = 150;
-startButtonSprite.height = 75;
-
-startButtonSprite.x = 175;
-
-startButtonSprite.interactive = true;
+const startButtonSprite = CreateStartButton();
 
 const asset = new GameAsset(250, 100);
 
@@ -136,15 +131,41 @@ let score = 0;
 let coins = 10;
 
 startButtonSprite.on("pointerdown", () => {
+  asset.ResetPostion();
+
+  asset.GeneratePuck();
+  console.log(asset);
+
   score++;
   coins--;
-  coinPuck.y = 100;
 
-  document.getElementById("player-score").innerHTML = `Score : ${score}`;
-  document.getElementById("player-coins").innerHTML = `Coins : ${coins}`;
+  if (coins <= 0) {
+    console.log("Game Over! Insufficient Coins");
+    document.getElementById("player-coins").style.color = "red";
+  }
+  else {
+    document.getElementById("player-score").innerHTML = `Score : ${score}`;
+    document.getElementById("player-coins").innerHTML = `Coins : ${coins}`;
 
-  setInterval(GameLoop, 1000 / 60);
+    setInterval(GameLoop, 1000 / 60);
+  }
 });
+
+function CreateStartButton() {
+  const startButtonSprite = PIXI.Sprite.from(
+    "./assets/vecteezy_start-button.png"
+  );
+
+  startButtonSprite.width = 150;
+  startButtonSprite.height = 75;
+
+  startButtonSprite.x = 175;
+
+  startButtonSprite.interactive = true;
+  container.addChild(startButtonSprite);
+
+  return startButtonSprite;
+}
 
 function GameLoop() {
   if (coinPuck.position.y < 375 && coins >= 0) {
@@ -152,8 +173,4 @@ function GameLoop() {
   } else {
     container.removeChild(coinPuck);
   }
-
-  asset.Reset();
 }
-
-// setInterval(GameLoop, 5000 / 60);
