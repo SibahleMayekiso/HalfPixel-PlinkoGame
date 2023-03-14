@@ -24,44 +24,32 @@ const bucketsPaths = {
 
 }
 
-function ChooseBucket(bucketNumber, bucketsPaths) {
+function GetBucketPath(bucketNumber, bucketsPaths) {
     switch (bucketNumber) {
         case 1:
-            bucketsPaths.bucketOnePaths
-            break;
+            return GetRandomPath(bucketsPaths.bucketOnePaths);
 
         case 2:
-
-            break;
+            return GetRandomPath(bucketsPaths.bucketTwoPaths);
 
         case 3:
-
-            break;
+            return GetRandomPath(bucketsPaths.bucketThreePaths);
 
         case 4:
-
-            break;
+            return GetRandomPath(bucketsPaths.bucketFourPaths);
 
         case 5:
-
-            break;
-
+            return GetRandomPath(bucketsPaths.bucketFivePaths);
     }
 }
 
 function GetRandomPath(bucketPaths) {
-    const numberOfPaths = bucketPaths.length;
-
     let randomNumber = Math.floor(Math.random() * 4);
 
-    if (numberOfPaths == 1) {
-        return bucketPaths[0];
-    }
-    else {
-        return bucketPaths[randomNumber]
-    }
+    const numberOfPaths = bucketPaths.length;
+    return (numberOfPaths == 1) ? bucketPaths[0] : bucketPaths[randomNumber]
 }
 
-function GetRandomNumberInRange(minNumber, maxNumber) {
-    return Math.floor(math.Random() * (max - min + 1) + min)
-}
+// function GetRandomNumberInRange(minNumber, maxNumber) {
+//     return Math.floor(math.Random() * (max - min + 1) + min)
+// }
