@@ -1,5 +1,5 @@
 import * as PIXI from "./node_modules/pixi.js/dist/pixi.mjs";
-import { CalculatNavigationPath } from "./GameLogic.js";
+import { CalculatNavigationPath } from "./src/GameLogic.js";
 
 const app = new PIXI.Application({
   width: 500,
@@ -152,7 +152,7 @@ startButtonSprite.on("pointerdown", () => {
     document.getElementById("player-score").innerHTML = `Score : ${score}`;
     document.getElementById("player-coins").innerHTML = `Coins : ${coins}`;
 
-    // setInterval(GameLoop, 1000 / 5);
+    setInterval(GameLoop, 1000 / 5);
   }
 });
 
@@ -173,10 +173,9 @@ function CreateStartButton() {
 }
 
 function GameLoop() {
-  if (coinPuck.position.y < 375 && coins >= 0) {
-    // asset.UpdatePosition();
-  } else {
+  if (coins <= 0) {
     container.removeChild(coinPuck);
+    startButtonSprite.interactive = false;
   }
 }
 
