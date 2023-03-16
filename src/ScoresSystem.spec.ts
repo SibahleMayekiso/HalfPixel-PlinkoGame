@@ -70,4 +70,19 @@ describe("UpdateScore", () => {
         //Assert
         expect(actualResult).toEqual(expectedResult);
     });
+});
+
+describe("UpdatePoints", () => {
+    test("should return 9 for GameScoreSystem(10, 0)", () => {
+        //Arrange
+        const expectedResult = 9;
+        const currentScore = 10;
+        const scoreSystem = new GameScoreSystem(currentScore, 0);
+
+        //Act
+        const actualResult = scoreSystem.UpdatePoints()
+        
+        //Assert
+        expect(actualResult).toEqual(expectedResult);
+    });
 })
