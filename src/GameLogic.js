@@ -20,8 +20,12 @@ const bucketsPaths = {
 };
 
 function GetRandomPath(bucketPaths) {
-  let randomNumber = Math.floor(Math.random() * 4);
   const numberOfPaths = bucketPaths.length;
+  let randomNumber = Math.floor(Math.random() * numberOfPaths);
+
+  console.log(`Path number: ${randomNumber}`);
+
+  console.log(`Path: ${bucketPaths[randomNumber]}`);
 
   return numberOfPaths === 1 ? bucketPaths[0] : bucketPaths[randomNumber];
 }
