@@ -59,6 +59,8 @@ function CalculatNavigationPath(bucketNumber) {
     pathCoordinates.push(`${positionX};${positionY}`);
   }
 
+  pathCoordinates.push(`${positionX};${positionY + 75}`);
+
   return pathCoordinates;
 }
 
