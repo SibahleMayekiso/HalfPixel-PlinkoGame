@@ -1,5 +1,5 @@
-import * as PIXI from "./node_modules/pixi.js/dist/pixi.mjs";
-import { CalculatNavigationPath } from "./src/GameLogic.js";
+import * as PIXI from "../node_modules/pixi.js/dist/pixi.mjs";
+import { CalculatNavigationPath } from "./GameLogic.js";
 
 const app = new PIXI.Application({
   width: 500,
@@ -14,13 +14,13 @@ app.stage.addChild(container);
 
 //prettier-ignore
 const gameBoardMap = [
-    [' ', ' ', ' ', ' ', ' ', '0', ' ', ' ', ' ', ' ', ' '],
-    [' ', ' ', ' ', '*', ' ', '*', ' ', '*', ' ', ' ', ' '],
-    [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
-    [' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' '],
+  [' ', ' ', ' ', ' ', ' ', '0', ' ', ' ', ' ', ' ', ' '],
+  [' ', ' ', ' ', '*', ' ', '*', ' ', '*', ' ', ' ', ' '],
   [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
-    [' ', '_', ' ', '_', ' ', '_', ' ', '_', ' ', '_', ' '],
-  ];
+  [' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' '],
+  [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
+  [' ', '_', ' ', '_', ' ', '_', ' ', '_', ' ', '_', ' '],
+];
 
 class GameBoard {
   constructor(width, height) {
@@ -137,7 +137,7 @@ let coins = 10;
 startButtonSprite.on("pointerdown", () => {
   asset.ResetPostion();
 
-  const path = CalculatNavigationPath(3);
+  const path = CalculatNavigationPath(2);
   MovePuckOnPath(path);
 
   console.log(asset);
