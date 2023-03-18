@@ -1,5 +1,6 @@
 import * as PIXI from "../node_modules/pixi.js/dist/pixi.mjs";
-import { CalculatNavigationPath, PreDetermineBucketToLandIn } from "./GameLogic.js";
+import { CalculateNavigationPath, PreDetermineBucketToLandIn } from "./GameLogic.js";
+import { GameScoreSystem } from "./ScoreSystem.js";
 const app = new PIXI.Application({
     width: 500,
     height: 600,
@@ -70,16 +71,6 @@ class GameAsset {
         coinPuck.y = this._positionY;
         container.addChild(coinPuck);
     }
-    // UpdatePosition() {
-    //   // this.GeneratePuck();
-    //   GameAsset.velocityX++;
-    //   GameAsset.velocityY++;
-    //   coinPuck.x = 250;
-    //   coinPuck.y += GameAsset.velocityY;
-    //   //Test output
-    //   console.log(`xAxis: ${this._positionX}, yAxis: ${this._positionY}`);
-    //   console.log(`Velocity Y: ${GameAsset.velocityY}`);
-    // }
     MovePosition() {
         coinPuck.x = this._positionX;
         coinPuck.y = this._positionY;
@@ -87,34 +78,31 @@ class GameAsset {
     ResetPostion() {
         this._positionX = 250;
         this._positionY = 100;
-        GameAsset.velocityX = 5;
-        GameAsset.velocityY = 5;
     }
 }
-GameAsset.velocityX = 0;
-GameAsset.velocityY = 0;
 const board = new GameBoard(500, 600);
 board.SetUpGameBoard();
 const startButtonSprite = CreateStartButton();
 const asset = new GameAsset(250, 100);
-let score = 0;
-let coins = 10;
+const scoreState = new GameScoreSystem(10, 0);
 startButtonSprite.on("pointerdown", () => {
     asset.ResetPostion();
-    const bucketNumber = PreDetermineBucketToLandIn();
-    const path = CalculatNavigationPath(bucketNumber);
-    MovePuckOnPath(path);
-    console.log(asset);
-    score++;
-    coins--;
-    if (coins <= 0) {
+    if (scoreState._totalPlayerPoints <= 0) {
+        container.removeChild(coinPuck);
         console.log("Game Over! Insufficient Coins");
         document.getElementById("player-coins").style.color = "red";
+        startButtonSprite.interactive = false;
     }
     else {
-        document.getElementById("player-score").innerHTML = `Score : ${score}`;
-        document.getElementById("player-coins").innerHTML = `Coins : ${coins}`;
-        setInterval(GameLoop, 1000 / 5);
+        const bucketNumber = PreDetermineBucketToLandIn();
+        const path = CalculateNavigationPath(bucketNumber);
+        let currentScore = scoreState.GetCurrentScore();
+        scoreState.UpdateScore(currentScore, bucketNumber);
+        scoreState.UpdatePoints();
+        MovePuckOnPath(path);
+        document.getElementById("player-score").innerHTML = `Score : ${scoreState._totalPlayerScore}`;
+        document.getElementById("player-coins").innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
+        setInterval(GameLoop, 1000 / 60);
     }
 });
 function CreateStartButton() {
@@ -127,9 +115,8 @@ function CreateStartButton() {
     return startButtonSprite;
 }
 function GameLoop() {
-    if (coins <= 0) {
+    if (scoreState._totalPlayerPoints < 0) {
         container.removeChild(coinPuck);
-        startButtonSprite.interactive = false;
     }
 }
 function MovePuckOnPath(path) {
@@ -137,11 +124,9 @@ function MovePuckOnPath(path) {
     path.forEach((element, index) => {
         setTimeout(() => {
             let axisValues = element.split(";");
-            console.log(axisValues);
             asset._positionX = Number.parseInt(axisValues[0]);
             asset._positionY = Number.parseInt(axisValues[1]);
-            console.log(`Current position x & y: ${asset._positionX}, ${asset._positionY}`);
             asset.MovePosition();
-        }, 500 * index);
+        }, 1000 * index);
     });
 }

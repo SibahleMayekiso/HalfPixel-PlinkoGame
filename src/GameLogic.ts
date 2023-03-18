@@ -1,7 +1,7 @@
-import { GameScoreSystem } from "./ScoreSystem";
-
 const bucketsWithPaths = {
-  bucketOnePaths: [["L", "L", "L", "L"]],
+  bucketOnePaths: [
+    ["L", "L", "L", "L"]
+  ],
   bucketTwoPaths: [
     ["L", "L", "L", "R"],
     ["L", "L", "R", "L"],
@@ -18,17 +18,15 @@ const bucketsWithPaths = {
     ["R", "R", "R", "L"],
     ["R", "L", "R", "R"],
   ],
-  bucketFivePaths: [["R", "R", "R", "R"]],
+  bucketFivePaths: [
+    ["R", "R", "R", "R"]
+  ],
 };
 
 function GetRandomPath(paths: string[][]) {
   const numberOfPaths = Object.keys(paths).length;
 
   let randomNumber = Math.floor(Math.random() * numberOfPaths);
-
-  console.log(`Path number: ${randomNumber}`);
-
-  console.log(`Path: ${paths[randomNumber]}`);
 
   return paths[randomNumber];
 }
@@ -39,9 +37,7 @@ function PreDetermineBucketToLandIn(){
   return randomBucketIndex;
 }
 
-function GetBucketPath(bucketsWithPaths: {bucketOnePaths: string[][], bucketTwoPaths: string[][], bucketThreePaths: string[][], bucketFourPaths: string[][], bucketFivePaths: string[][]}) {
-  const bucketNumber = PreDetermineBucketToLandIn();
-  
+function GetBucketPath(bucketNumber: number, bucketsWithPaths: {bucketOnePaths: string[][], bucketTwoPaths: string[][], bucketThreePaths: string[][], bucketFourPaths: string[][], bucketFivePaths: string[][]}) {
   switch (bucketNumber) {
     case 1:
       return GetRandomPath(bucketsWithPaths.bucketOnePaths);
@@ -60,12 +56,12 @@ function GetBucketPath(bucketsWithPaths: {bucketOnePaths: string[][], bucketTwoP
   }
 }
 
-function CalculatNavigationPath(bucketNumber: number) {
+function CalculateNavigationPath(bucketNumber: number) {
   let pathCoordinates = ["250;100"];
   let positionX = 250;
   let positionY = 100;
 
-  const path = GetBucketPath(bucketsWithPaths) as string[];
+  const path = GetBucketPath(bucketNumber, bucketsWithPaths) as string[];
 
   for (const element of path) {
     element === "L" ? (positionX -= 50) : (positionX += 50);
@@ -79,4 +75,4 @@ function CalculatNavigationPath(bucketNumber: number) {
   return pathCoordinates;
 }
 
-export { CalculatNavigationPath, PreDetermineBucketToLandIn };
+export { CalculateNavigationPath, PreDetermineBucketToLandIn };
