@@ -1,5 +1,5 @@
 import * as PIXI from "../node_modules/pixi.js/dist/pixi.mjs";
-import { CalculatNavigationPath } from "./GameLogic.js";
+import { CalculatNavigationPath, PreDetermineBucketToLandIn } from "./GameLogic.js";
 
 const app = new PIXI.Application({
   width: 500,
@@ -102,19 +102,19 @@ class GameAsset {
     container.addChild(coinPuck);
   }
 
-  UpdatePosition() {
-    // this.GeneratePuck();
+  // UpdatePosition() {
+  //   // this.GeneratePuck();
 
-    GameAsset.velocityX++;
-    GameAsset.velocityY++;
+  //   GameAsset.velocityX++;
+  //   GameAsset.velocityY++;
 
-    coinPuck.x = 250;
-    coinPuck.y += GameAsset.velocityY;
+  //   coinPuck.x = 250;
+  //   coinPuck.y += GameAsset.velocityY;
 
-    //Test output
-    console.log(`xAxis: ${this._positionX}, yAxis: ${this._positionY}`);
-    console.log(`Velocity Y: ${GameAsset.velocityY}`);
-  }
+  //   //Test output
+  //   console.log(`xAxis: ${this._positionX}, yAxis: ${this._positionY}`);
+  //   console.log(`Velocity Y: ${GameAsset.velocityY}`);
+  // }
 
   MovePosition() {
     coinPuck.x = this._positionX;
@@ -143,7 +143,8 @@ let coins = 10;
 startButtonSprite.on("pointerdown", () => {
   asset.ResetPostion();
 
-  const path = CalculatNavigationPath(2);
+  const bucketNumber = PreDetermineBucketToLandIn();
+  const path = CalculatNavigationPath(bucketNumber);
   MovePuckOnPath(path);
 
   console.log(asset);

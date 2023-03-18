@@ -1,3 +1,5 @@
+import { GameScoreSystem } from "./ScoreSystem";
+
 const bucketsWithPaths = {
   bucketOnePaths: [["L", "L", "L", "L"]],
   bucketTwoPaths: [
@@ -31,7 +33,15 @@ function GetRandomPath(paths: string[][]) {
   return paths[randomNumber];
 }
 
-function GetBucketPath(bucketNumber: number, bucketsWithPaths: {bucketOnePaths: string[][], bucketTwoPaths: string[][], bucketThreePaths: string[][], bucketFourPaths: string[][], bucketFivePaths: string[][]}) {
+function PreDetermineBucketToLandIn(){
+  let randomBucketIndex = Math.floor(Math.random() * 5) + 1;
+
+  return randomBucketIndex;
+}
+
+function GetBucketPath(bucketsWithPaths: {bucketOnePaths: string[][], bucketTwoPaths: string[][], bucketThreePaths: string[][], bucketFourPaths: string[][], bucketFivePaths: string[][]}) {
+  const bucketNumber = PreDetermineBucketToLandIn();
+  
   switch (bucketNumber) {
     case 1:
       return GetRandomPath(bucketsWithPaths.bucketOnePaths);
@@ -55,7 +65,7 @@ function CalculatNavigationPath(bucketNumber: number) {
   let positionX = 250;
   let positionY = 100;
 
-  const path = GetBucketPath(bucketNumber, bucketsWithPaths) as string[];
+  const path = GetBucketPath(bucketsWithPaths) as string[];
 
   for (const element of path) {
     element === "L" ? (positionX -= 50) : (positionX += 50);
@@ -69,4 +79,4 @@ function CalculatNavigationPath(bucketNumber: number) {
   return pathCoordinates;
 }
 
-export { CalculatNavigationPath };
+export { CalculatNavigationPath, PreDetermineBucketToLandIn };
