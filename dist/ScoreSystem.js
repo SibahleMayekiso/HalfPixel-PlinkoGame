@@ -1,6 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GameScoreSystem = void 0;
 class GameScoreSystem {
     constructor(totalCoins, totalScore) {
         this._totalPlayerPoints = totalCoins;
@@ -35,4 +32,4 @@ class GameScoreSystem {
         }
     }
 }
-exports.GameScoreSystem = GameScoreSystem;
+export { GameScoreSystem };

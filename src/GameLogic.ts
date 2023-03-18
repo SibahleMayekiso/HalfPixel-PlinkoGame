@@ -1,4 +1,4 @@
-const bucketsPaths = {
+const bucketsWithPaths = {
   bucketOnePaths: [["L", "L", "L", "L"]],
   bucketTwoPaths: [
     ["L", "L", "L", "R"],
@@ -19,43 +19,43 @@ const bucketsPaths = {
   bucketFivePaths: [["R", "R", "R", "R"]],
 };
 
-function GetRandomPath(bucketPaths) {
-  const numberOfPaths = bucketPaths.length;
+function GetRandomPath(paths: string[][]) {
+  const numberOfPaths = Object.keys(paths).length;
 
   let randomNumber = Math.floor(Math.random() * numberOfPaths);
 
   console.log(`Path number: ${randomNumber}`);
 
-  console.log(`Path: ${bucketPaths[randomNumber]}`);
+  console.log(`Path: ${paths[randomNumber]}`);
 
-  return bucketPaths[randomNumber];
+  return paths[randomNumber];
 }
 
-function GetBucketPath(bucketNumber, bucketsPaths) {
+function GetBucketPath(bucketNumber: number, bucketsWithPaths: {bucketOnePaths: string[][], bucketTwoPaths: string[][], bucketThreePaths: string[][], bucketFourPaths: string[][], bucketFivePaths: string[][]}) {
   switch (bucketNumber) {
     case 1:
-      return GetRandomPath(bucketsPaths.bucketOnePaths);
+      return GetRandomPath(bucketsWithPaths.bucketOnePaths);
 
     case 2:
-      return GetRandomPath(bucketsPaths.bucketTwoPaths);
+      return GetRandomPath(bucketsWithPaths.bucketTwoPaths);
 
     case 3:
-      return GetRandomPath(bucketsPaths.bucketThreePaths);
+      return GetRandomPath(bucketsWithPaths.bucketThreePaths);
 
     case 4:
-      return GetRandomPath(bucketsPaths.bucketFourPaths);
+      return GetRandomPath(bucketsWithPaths.bucketFourPaths);
 
     case 5:
-      return GetRandomPath(bucketsPaths.bucketFivePaths);
+      return GetRandomPath(bucketsWithPaths.bucketFivePaths);
   }
 }
 
-function CalculatNavigationPath(bucketNumber) {
+function CalculatNavigationPath(bucketNumber: number) {
   let pathCoordinates = ["250;100"];
   let positionX = 250;
   let positionY = 100;
 
-  const path = GetBucketPath(bucketNumber, bucketsPaths);
+  const path = GetBucketPath(bucketNumber, bucketsWithPaths) as string[];
 
   for (const element of path) {
     element === "L" ? (positionX -= 50) : (positionX += 50);

@@ -73,7 +73,7 @@ describe("UpdateScore", () => {
 });
 
 describe("UpdatePoints", () => {
-    test("should return 9 for GameScoreSystem(10, 0)", () => {
+    test("should return 9 for UpdatePoints() given GameScoreSystem(10, 0)", () => {
         //Arrange
         const expectedResult = 9;
         const currentScore = 10;

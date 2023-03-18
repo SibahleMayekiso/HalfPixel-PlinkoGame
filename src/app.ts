@@ -23,7 +23,10 @@ const gameBoardMap = [
 ];
 
 class GameBoard {
-  constructor(width, height) {
+  _width: number;
+  _height: number;
+
+  constructor(width: number, height: number) {
     this._width = width;
     this._height = height;
   }
@@ -80,9 +83,12 @@ class GameAsset {
   static velocityX = 0;
   static velocityY = 0;
 
-  constructor(positionX, positionY) {
-    this.positionX = positionX;
-    this.positionY = positionY;
+  _positionX: number;
+  _positionY: number;
+
+  constructor(positionX: number, positionY: number) {
+    this._positionX = positionX;
+    this._positionY = positionY;
   }
 
   GeneratePuck() {
@@ -90,8 +96,8 @@ class GameAsset {
     coinPuck.width = 25;
     coinPuck.height = 25;
 
-    coinPuck.x = this.positionX;
-    coinPuck.y = this.positionY;
+    coinPuck.x = this._positionX;
+    coinPuck.y = this._positionY;
 
     container.addChild(coinPuck);
   }
@@ -106,18 +112,18 @@ class GameAsset {
     coinPuck.y += GameAsset.velocityY;
 
     //Test output
-    console.log(`xAxis: ${this.positionX}, yAxis: ${this.positionY}`);
+    console.log(`xAxis: ${this._positionX}, yAxis: ${this._positionY}`);
     console.log(`Velocity Y: ${GameAsset.velocityY}`);
   }
 
   MovePosition() {
-    coinPuck.x = this.positionX;
-    coinPuck.y = this.positionY;
+    coinPuck.x = this._positionX;
+    coinPuck.y = this._positionY;
   }
 
   ResetPostion() {
-    this.positionX = 250;
-    this.positionY = 100;
+    this._positionX = 250;
+    this._positionY = 100;
 
     GameAsset.velocityX = 5;
     GameAsset.velocityY = 5;
@@ -147,10 +153,10 @@ startButtonSprite.on("pointerdown", () => {
 
   if (coins <= 0) {
     console.log("Game Over! Insufficient Coins");
-    document.getElementById("player-coins").style.color = "red";
+    document.getElementById("player-coins")!.style.color = "red";
   } else {
-    document.getElementById("player-score").innerHTML = `Score : ${score}`;
-    document.getElementById("player-coins").innerHTML = `Coins : ${coins}`;
+    document.getElementById("player-score")!.innerHTML = `Score : ${score}`;
+    document.getElementById("player-coins")!.innerHTML = `Coins : ${coins}`;
 
     setInterval(GameLoop, 1000 / 5);
   }
@@ -179,7 +185,7 @@ function GameLoop() {
   }
 }
 
-function MovePuckOnPath(path) {
+function MovePuckOnPath(path: string[]) {
   asset.GeneratePuck();
 
   path.forEach((element, index) => {
@@ -187,10 +193,10 @@ function MovePuckOnPath(path) {
       let axisValues = element.split(";");
       console.log(axisValues);
 
-      asset.positionX = axisValues[0];
-      asset.positionY = axisValues[1];
+      asset._positionX = Number.parseInt(axisValues[0]);
+      asset._positionY = Number.parseInt(axisValues[1]);
       console.log(
-        `Current position x & y: ${asset.positionX}, ${asset.positionY}`
+        `Current position x & y: ${asset._positionX}, ${asset._positionY}`
       );
       asset.MovePosition();
     }, 500 * index);
