@@ -1,9 +1,9 @@
-class GameScoreSystem {
+export class GameScoreSystem {
     _totalPlayerPoints: number;
     _totalPlayerScore: number;
 
-    constructor(totalCoins: number, totalScore: number) {
-        this._totalPlayerPoints = totalCoins;
+    constructor(totalPoints: number, totalScore: number) {
+        this._totalPlayerPoints = totalPoints;
         this._totalPlayerScore = totalScore
     }
 
@@ -49,5 +49,3 @@ class GameScoreSystem {
         }
     }
 }
-
-export { GameScoreSystem };

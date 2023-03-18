@@ -1,6 +1,6 @@
-class GameScoreSystem {
-    constructor(totalCoins, totalScore) {
-        this._totalPlayerPoints = totalCoins;
+export class GameScoreSystem {
+    constructor(totalPoints, totalScore) {
+        this._totalPlayerPoints = totalPoints;
         this._totalPlayerScore = totalScore;
     }
     UpdatePoints() {
@@ -32,4 +32,3 @@ class GameScoreSystem {
         }
     }
 }
-export { GameScoreSystem };

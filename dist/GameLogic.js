@@ -25,7 +25,12 @@ function GetRandomPath(paths) {
     console.log(`Path: ${paths[randomNumber]}`);
     return paths[randomNumber];
 }
-function GetBucketPath(bucketNumber, bucketsWithPaths) {
+function PreDetermineBucketToLandIn() {
+    let randomBucketIndex = Math.floor(Math.random() * 5) + 1;
+    return randomBucketIndex;
+}
+function GetBucketPath(bucketsWithPaths) {
+    const bucketNumber = PreDetermineBucketToLandIn();
     switch (bucketNumber) {
         case 1:
             return GetRandomPath(bucketsWithPaths.bucketOnePaths);
@@ -43,7 +48,7 @@ function CalculatNavigationPath(bucketNumber) {
     let pathCoordinates = ["250;100"];
     let positionX = 250;
     let positionY = 100;
-    const path = GetBucketPath(bucketNumber, bucketsWithPaths);
+    const path = GetBucketPath(bucketsWithPaths);
     for (const element of path) {
         element === "L" ? (positionX -= 50) : (positionX += 50);
         positionY += 50;
@@ -52,4 +57,4 @@ function CalculatNavigationPath(bucketNumber) {
     pathCoordinates.push(`${positionX};${positionY + 75}`);
     return pathCoordinates;
 }
-export { CalculatNavigationPath };
+export { CalculatNavigationPath, PreDetermineBucketToLandIn };
