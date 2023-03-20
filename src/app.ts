@@ -23,6 +23,69 @@ const gameBoardMap = [
   [' ', '_', ' ', '_', ' ', '_', ' ', '_', ' ', '_', ' '],
 ];
 
+class GameBucketSlot{
+  positionX: number;
+  positionY: number;
+
+  constructor(positionX: number, positionY: number) {
+    this.positionX = positionX;
+    this.positionY = positionY;
+  }
+
+  GenerateBucket(bucketIndex: number) {
+    let absoulteNumber = Math.abs(bucketIndex - 5);
+
+    switch (absoulteNumber) {
+      case 4:
+        const bucketTen = PIXI.Sprite.from("/assets/BucketAssets/10PointsBucketSlot.png");
+
+        bucketTen.anchor.set(0.5);
+        bucketTen.width = 75;
+        bucketTen.height = 50;
+        bucketTen.x = this.positionX;
+        bucketTen.y = this.positionY;
+
+        container.addChild(bucketTen);
+
+        break;
+      case 2:
+        const bucketFive = PIXI.Sprite.from("/assets/BucketAssets/5PointsBucketSlot.png");
+
+        bucketFive.anchor.set(0.5);
+        bucketFive.width = 75;
+        bucketFive.height = 50;
+        bucketFive.x = this.positionX;
+        bucketFive.y = this.positionY;
+
+        container.addChild(bucketFive);  
+
+        break;
+      case 0:
+        const bucketTwo = PIXI.Sprite.from("/assets/BucketAssets/2PointsBucketSlot.png");
+
+        bucketTwo.anchor.set(0.5);
+        bucketTwo.width = 75;
+        bucketTwo.height = 50;
+        bucketTwo.x = this.positionX;
+        bucketTwo.y = this.positionY;
+
+        container.addChild(bucketTwo);  
+
+        break;
+    
+      default:
+        break;
+    }
+    // this.coinPuck.anchor.set(0.5);
+    // this.coinPuck.width = 25;
+    // this.coinPuck.height = 25;
+    // this.coinPuck.x = this.positionX;
+    // this.coinPuck.y = this.positionY;
+
+    // container.addChild(this.coinPuck);
+  }
+}
+
 class GameBoard {
   _width: number;
   _height: number;
@@ -61,14 +124,9 @@ class GameBoard {
             break;
 
           case "_":
-            const bucket = new PIXI.Graphics()
-              .beginFill(0xf0d020)
-              .lineStyle(5, 0x4b0008)
-              .drawRect(50 * columnIndex - 25, 100 + 50 * rowIndex, 50, 50, 2)
-              .endFill();
+            const bucket = new GameBucketSlot(50 * columnIndex, 100 + 50 * rowIndex);
+            bucket.GenerateBucket(columnIndex);
 
-              
-            container.addChild(bucket);
             break;
 
           default:
@@ -79,14 +137,12 @@ class GameBoard {
   }
 }
 
-
 class GameAsset {
-  coinPuck = PIXI.Sprite.from("./assets/Coin Pack/Coin9.png");
   positionX: number;
   positionY: number;
   velocityX: number;
   velocityY: number;
-
+  
   constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
     this.positionX = positionX;
     this.positionY = positionY;
@@ -96,11 +152,13 @@ class GameAsset {
 }
 
 class GamePuck extends GameAsset{
+  coinPuck = PIXI.Sprite.from("./assets/Coin Pack/Coin9.png");
+  
   constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
     super(positionX, positionY, velocityX, velocityY)
-
+    
   }
-
+  
   GeneratePuck() {
     this.coinPuck.anchor.set(0.5);
     this.coinPuck.width = 25;
