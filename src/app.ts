@@ -79,36 +79,51 @@ class GameBoard {
   }
 }
 
-const coinPuck = PIXI.Sprite.from("./assets/Coin Pack/Coin9.png");
 
 class GameAsset {
-  _positionX: number;
-  _positionY: number;
+  coinPuck = PIXI.Sprite.from("./assets/Coin Pack/Coin9.png");
+  positionX: number;
+  positionY: number;
+  velocityX: number;
+  velocityY: number;
 
-  constructor(positionX: number, positionY: number) {
-    this._positionX = positionX;
-    this._positionY = positionY;
+  constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
+    this.positionX = positionX;
+    this.positionY = positionY;
+    this.velocityX = velocityX;
+    this.velocityY = velocityY;
+  }
+}
+
+class GamePuck extends GameAsset{
+  constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
+    super(positionX, positionY, velocityX, velocityY)
+
   }
 
   GeneratePuck() {
-    coinPuck.anchor.set(0.5);
-    coinPuck.width = 25;
-    coinPuck.height = 25;
+    this.coinPuck.anchor.set(0.5);
+    this.coinPuck.width = 25;
+    this.coinPuck.height = 25;
+    this.coinPuck.x = this.positionX;
+    this.coinPuck.y = this.positionY;
 
-    coinPuck.x = this._positionX;
-    coinPuck.y = this._positionY;
+    container.addChild(this.coinPuck);
+  }
 
-    container.addChild(coinPuck);
+  UpdatePosition() {
+    this.positionX += this.velocityX;
+    this.positionY += this.velocityY;
   }
 
   MovePosition() {
-    coinPuck.x = this._positionX;
-    coinPuck.y = this._positionY;
+    this.coinPuck.x = this.positionX;
+    this.coinPuck.y = this.positionY;
   }
 
   ResetPostion() {
-    this._positionX = 250;
-    this._positionY = 100;
+    this.positionX = 250;
+    this.positionY = 100;
   }
 }
 
@@ -117,28 +132,30 @@ board.SetUpGameBoard();
 
 const startButtonSprite = CreateStartButton();
 
-const asset = new GameAsset(250, 100);
+const asset = new GamePuck(250, 100, 0, 1);
 const scoreState = new GameScoreSystem(10, 0)
 
 startButtonSprite.on("pointerdown", () => {
   asset.ResetPostion();
 
+  asset.GeneratePuck();
+
   if (scoreState._totalPlayerPoints <= 0) {
-    container.removeChild(coinPuck);
+    container.removeChild(asset);
     console.log("Game Over! Insufficient Coins");
     document.getElementById("player-coins")!.style.color = "red";
     
     startButtonSprite.interactive = false;
   } 
   else {
-    const bucketNumber = PreDetermineBucketToLandIn();
-    const path = CalculateNavigationPath(bucketNumber);
+    // const bucketNumber = PreDetermineBucketToLandIn();
+    // const path = CalculateNavigationPath(bucketNumber);
     
     let currentScore = scoreState.GetCurrentScore()
-    scoreState.UpdateScore(currentScore, bucketNumber);
+    // scoreState.UpdateScore(currentScore, bucketNumber);
     scoreState.UpdatePoints();
 
-    MovePuckOnPath(path);
+    // MovePuckOnPath(path);
     
     document.getElementById("player-score")!.innerHTML = `Score : ${scoreState._totalPlayerScore}`;
     document.getElementById("player-coins")!.innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
@@ -164,22 +181,29 @@ function CreateStartButton() {
 }
 
 function GameLoop() {
-  if (scoreState._totalPlayerPoints < 0) {
-    container.removeChild(coinPuck);
+  asset.UpdatePosition();
+  
+  if (asset.positionY > 375) {
+      container.removeChild(asset);
   }
+  else{
+    asset.MovePosition();
+
+  }
+
 }
 
-function MovePuckOnPath(path: string[]) {
-  asset.GeneratePuck();
+// function MovePuckOnPath(path: string[]) {
+//   asset.GeneratePuck();
 
-  path.forEach((element, index) => {
-    setTimeout(() => {
-      let axisValues = element.split(";");
+//   path.forEach((element, index) => {
+//     setTimeout(() => {
+//       let axisValues = element.split(";");
 
-      asset._positionX = Number.parseInt(axisValues[0]);
-      asset._positionY = Number.parseInt(axisValues[1]);
+//       asset.positionX = Number.parseInt(axisValues[0]);
+//       asset.positionY = Number.parseInt(axisValues[1]);
 
-      asset.MovePosition();
-    }, 1000 * index);
-  });
-}
+//       asset.MovePosition();
+//     }, 1000 * index);
+//   });
+// }
