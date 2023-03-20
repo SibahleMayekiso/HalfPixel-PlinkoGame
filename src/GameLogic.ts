@@ -32,9 +32,35 @@ function GetRandomPath(paths: string[][]) {
 }
 
 function PreDetermineBucketToLandIn(){
-  let randomBucketIndex = Math.floor(Math.random() * 5) + 1;
+  let bucketWeights = [1, 2, 3];
+  const leftRightProbalility = Math.random();
 
-  return randomBucketIndex;
+  const weigthProbabilties = bucketWeights.map(number => number * Math.random())
+
+  let lowestWeight = Math.min(...weigthProbabilties);
+
+  let weigthIndex = 0;
+
+  for (let index = 0; index < weigthProbabilties.length; index++) {
+      if (weigthProbabilties[index] === lowestWeight) {
+        weigthIndex = index + 1;
+      }
+  }
+
+  switch (weigthIndex) {
+    case 2:
+      return (leftRightProbalility < 0.5) ? 2 : 4;
+      
+    case 3:
+      return (leftRightProbalility < 0.5) ? 1: 5;
+      
+    default:
+      return 3;
+  }
+
+
+
+  // return randomBucketIndex;
 }
 
 function GetBucketPath(bucketNumber: number, bucketsWithPaths: {bucketOnePaths: string[][], bucketTwoPaths: string[][], bucketThreePaths: string[][], bucketFourPaths: string[][], bucketFivePaths: string[][]}) {
