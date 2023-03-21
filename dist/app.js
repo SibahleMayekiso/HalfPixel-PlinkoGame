@@ -21,11 +21,16 @@ class GameBucketSlot {
     constructor(positionX, positionY) {
         this.positionX = positionX;
         this.positionY = positionY;
+        this.bucketPoints = 0;
+    }
+    GetBucketPoints() {
+        console.log(`Bucket points: ${this.bucketPoints}`);
     }
     GenerateBucket(bucketIndex) {
         let absoulteNumber = Math.abs(bucketIndex - 5);
         switch (absoulteNumber) {
             case 4:
+                this.bucketPoints = 10;
                 const bucketTen = PIXI.Sprite.from("/assets/BucketAssets/10PointsBucketSlot.png");
                 bucketTen.anchor.set(0.5);
                 bucketTen.width = 75;
@@ -35,6 +40,7 @@ class GameBucketSlot {
                 container.addChild(bucketTen);
                 break;
             case 2:
+                this.bucketPoints = 5;
                 const bucketFive = PIXI.Sprite.from("/assets/BucketAssets/5PointsBucketSlot.png");
                 bucketFive.anchor.set(0.5);
                 bucketFive.width = 75;
@@ -44,6 +50,7 @@ class GameBucketSlot {
                 container.addChild(bucketFive);
                 break;
             case 0:
+                this.bucketPoints = 2;
                 const bucketTwo = PIXI.Sprite.from("/assets/BucketAssets/2PointsBucketSlot.png");
                 bucketTwo.anchor.set(0.5);
                 bucketTwo.width = 75;
@@ -55,12 +62,6 @@ class GameBucketSlot {
             default:
                 break;
         }
-        // this.coinPuck.anchor.set(0.5);
-        // this.coinPuck.width = 25;
-        // this.coinPuck.height = 25;
-        // this.coinPuck.x = this.positionX;
-        // this.coinPuck.y = this.positionY;
-        // container.addChild(this.coinPuck);
     }
 }
 class GameBoard {
@@ -90,6 +91,7 @@ class GameBoard {
                     case "_":
                         const bucket = new GameBucketSlot(50 * columnIndex, 100 + 50 * rowIndex);
                         bucket.GenerateBucket(columnIndex);
+                        // bucket.GetBucketPoints();
                         break;
                     default:
                         break;
