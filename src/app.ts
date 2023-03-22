@@ -120,12 +120,8 @@ class GameBoard {
             break;
 
           case "*":
-            const pin = new PIXI.Graphics()
-              .beginFill(0xffffff)
-              .drawCircle(50 * columnIndex, 100 + 50 * rowIndex, 5)
-              .endFill();
-
-            container.addChild(pin);
+            const plinkoPin = new GamePlinkoPin(50 * columnIndex, 100 + 50 * rowIndex, 0, 0);
+            plinkoPin.GeneratePin();
             break;
 
           case "_":
@@ -155,6 +151,28 @@ class GameAsset {
     this.positionY = positionY;
     this.velocityX = velocityX;
     this.velocityY = velocityY;
+  }
+}
+
+class GamePlinkoPin extends GameAsset {
+  radius: number;
+  isColliding: boolean;
+
+  constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
+    super(positionX, positionY, velocityX, velocityY);
+
+    this.radius = 5; 
+    this.isColliding = false; 
+  }
+
+  GeneratePin() {
+    const pin = new PIXI.Graphics()
+      .beginFill(0xffffff)
+      .drawCircle(this.positionX,this.positionY, this.radius)
+      .endFill();
+
+    container.addChild(pin);
+    
   }
 }
 
