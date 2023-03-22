@@ -103,13 +103,13 @@ class GameAsset {
         this.positionY = positionY;
         this.velocityX = velocityX;
         this.velocityY = velocityY;
+        this.isColliding = false;
     }
 }
 class GamePlinkoPin extends GameAsset {
     constructor(positionX, positionY, velocityX, velocityY) {
         super(positionX, positionY, velocityX, velocityY);
         this.radius = 5;
-        this.isColliding = false;
     }
     GeneratePin() {
         const pin = new PIXI.Graphics()

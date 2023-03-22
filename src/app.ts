@@ -145,24 +145,24 @@ class GameAsset {
   positionY: number;
   velocityX: number;
   velocityY: number;
+  isColliding: boolean;
   
   constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
     this.positionX = positionX;
     this.positionY = positionY;
     this.velocityX = velocityX;
     this.velocityY = velocityY;
+    this.isColliding = false; 
   }
 }
 
 class GamePlinkoPin extends GameAsset {
   radius: number;
-  isColliding: boolean;
+
 
   constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
     super(positionX, positionY, velocityX, velocityY);
-
     this.radius = 5; 
-    this.isColliding = false; 
   }
 
   GeneratePin() {
