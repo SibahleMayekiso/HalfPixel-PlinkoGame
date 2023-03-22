@@ -189,6 +189,10 @@ function GameLoop() {
         asset.MovePosition();
     }
 }
+function CheckCircleIntersect(puckPositionX, puckPositionY, puckRadius, plinkoPegPositionX, plinkoPegPositionY, plinkoPegRadius) {
+    let distanceBetweenCircles = Math.pow(puckPositionX - plinkoPegPositionX, 2) + Math.pow(puckPositionY - plinkoPegPositionY, 2);
+    return distanceBetweenCircles <= Math.pow(puckRadius + plinkoPegRadius, 2);
+}
 // function MovePuckOnPath(path: string[]) {
 //   asset.GeneratePuck();
 //   path.forEach((element, index) => {
