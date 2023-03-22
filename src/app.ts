@@ -212,17 +212,24 @@ class GamePuck extends GameAsset{
   
   constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
     super(positionX, positionY, velocityX, velocityY)
-    this.radius = 25;
+    this.radius = 10;
   }
   
   GeneratePuck() {
-    this.coinPuck.anchor.set(0.5);
-    this.coinPuck.width = 25;
-    this.coinPuck.height = 25;
-    this.coinPuck.x = this.positionX;
-    this.coinPuck.y = this.positionY;
+    // this.coinPuck.anchor.set(0.5);
+    // this.coinPuck.width = 25;
+    // this.coinPuck.height = 25;
+    // this.coinPuck.x = this.positionX;
+    // this.coinPuck.y = this.positionY;
 
-    container.addChild(this.coinPuck);
+    // container.addChild(this.coinPuck);
+
+    const puck = new PIXI.Graphics()
+      .beginFill(0xE33900)
+      .drawCircle(this.positionX,this.positionY, this.radius)
+      .endFill();
+
+    container.addChild(puck);
   }
 
   UpdatePosition() {
@@ -230,10 +237,10 @@ class GamePuck extends GameAsset{
     this.positionY += this.velocityY;
   }
 
-  MovePosition() {
-    this.coinPuck.x = this.positionX;
-    this.coinPuck.y = this.positionY;
-  }
+  // MovePosition() {
+  //   this.coinPuck.x = this.positionX;
+  //   this.coinPuck.y = this.positionY;
+  // }
 
   ResetPostion() {
     this.positionX = 250;
@@ -248,6 +255,7 @@ const startButtonSprite = CreateStartButton();
 
 const asset = new GamePuck(250, 100, 0, 1);
 const scoreState = new GameScoreSystem(10, 0)
+
 
 startButtonSprite.on("pointerdown", () => {
   asset.ResetPostion();
@@ -273,8 +281,10 @@ startButtonSprite.on("pointerdown", () => {
     
     document.getElementById("player-score")!.innerHTML = `Score : ${scoreState._totalPlayerScore}`;
     document.getElementById("player-coins")!.innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
-
-    setInterval(GameLoop, 1000 / 10);
+    
+    setInterval(() => { 
+      GameLoop() 
+    }, 1000 / 60);
   }
 });
 
@@ -299,14 +309,15 @@ function GameLoop() {
   
   board.DetectCollisions(asset);
   console.log(asset);
-  
 
-  if (asset.positionY > 375) {
+  // asset.GeneratePuck();
+
+  if (asset.positionY > 350) {
       container.removeChild(asset);
   }
   else{
-    asset.MovePosition();
-
+    container.removeChild(asset);
+    asset.GeneratePuck();
   }
 
 }

@@ -144,24 +144,29 @@ class GamePuck extends GameAsset {
     constructor(positionX, positionY, velocityX, velocityY) {
         super(positionX, positionY, velocityX, velocityY);
         this.coinPuck = PIXI.Sprite.from("./assets/Coin Pack/Coin9.png");
-        this.radius = 25;
+        this.radius = 10;
     }
     GeneratePuck() {
-        this.coinPuck.anchor.set(0.5);
-        this.coinPuck.width = 25;
-        this.coinPuck.height = 25;
-        this.coinPuck.x = this.positionX;
-        this.coinPuck.y = this.positionY;
-        container.addChild(this.coinPuck);
+        // this.coinPuck.anchor.set(0.5);
+        // this.coinPuck.width = 25;
+        // this.coinPuck.height = 25;
+        // this.coinPuck.x = this.positionX;
+        // this.coinPuck.y = this.positionY;
+        // container.addChild(this.coinPuck);
+        const puck = new PIXI.Graphics()
+            .beginFill(0xE33900)
+            .drawCircle(this.positionX, this.positionY, this.radius)
+            .endFill();
+        container.addChild(puck);
     }
     UpdatePosition() {
         this.positionX += this.velocityX;
         this.positionY += this.velocityY;
     }
-    MovePosition() {
-        this.coinPuck.x = this.positionX;
-        this.coinPuck.y = this.positionY;
-    }
+    // MovePosition() {
+    //   this.coinPuck.x = this.positionX;
+    //   this.coinPuck.y = this.positionY;
+    // }
     ResetPostion() {
         this.positionX = 250;
         this.positionY = 100;
@@ -190,7 +195,9 @@ startButtonSprite.on("pointerdown", () => {
         // MovePuckOnPath(path);
         document.getElementById("player-score").innerHTML = `Score : ${scoreState._totalPlayerScore}`;
         document.getElementById("player-coins").innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
-        setInterval(GameLoop, 1000 / 10);
+        setInterval(() => {
+            GameLoop();
+        }, 1000 / 60);
     }
 });
 function CreateStartButton() {
@@ -206,11 +213,13 @@ function GameLoop() {
     asset.UpdatePosition();
     board.DetectCollisions(asset);
     console.log(asset);
-    if (asset.positionY > 375) {
+    // asset.GeneratePuck();
+    if (asset.positionY > 350) {
         container.removeChild(asset);
     }
     else {
-        asset.MovePosition();
+        container.removeChild(asset);
+        asset.GeneratePuck();
     }
 }
 function CheckCircleIntersect(puckPositionX, puckPositionY, puckRadius, plinkoPegPositionX, plinkoPegPositionY, plinkoPegRadius) {
