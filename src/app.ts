@@ -94,10 +94,12 @@ class GameBucketSlot{
 class GameBoard {
   _width: number;
   _height: number;
+  plinkoPins: GamePlinkoPin[];
 
   constructor(width: number, height: number) {
     this._width = width;
     this._height = height;
+    this.plinkoPins = [];
   }
 
   SetUpGameBoard() {
@@ -121,6 +123,7 @@ class GameBoard {
 
           case "*":
             const plinkoPin = new GamePlinkoPin(50 * columnIndex, 100 + 50 * rowIndex, 0, 0);
+            this.plinkoPins.push(plinkoPin);
             plinkoPin.GeneratePin();
             break;
 
@@ -138,6 +141,33 @@ class GameBoard {
       });
     });
   }
+
+  DetectCollisions(puck: GamePuck) {
+  puck.isColliding = false;
+
+  this.plinkoPins.forEach((element) => element.isColliding = false);
+
+  for (let index = 0; index < this.plinkoPins.length; index++) {
+    let plinkoPin = this.plinkoPins[index];
+
+    if (CheckCircleIntersect(puck.positionX, puck.positionY, puck.radius, plinkoPin.positionX, plinkoPin.positionY, plinkoPin.radius)) {
+      puck.isColliding = true;
+      plinkoPin.isColliding = true;
+
+      let collisionVector = {xAxis: puck.positionX - plinkoPin.positionX, yAxis: puck.positionY - plinkoPin.positionY};
+      let distance = Math.sqrt(Math.pow(puck.positionX - plinkoPin.positionX, 2) + Math.pow(puck.positionY - plinkoPin.positionY, 2));
+      let normalizedCollisionVector = {xAxis: collisionVector.xAxis / distance, yAxis: collisionVector.yAxis / distance};
+      let relativeVectorVelocity = {xAxis: puck.velocityX - plinkoPin.velocityX, yAxis: puck.velocityY - plinkoPin.velocityY};
+      let speed = relativeVectorVelocity.xAxis * normalizedCollisionVector.xAxis + relativeVectorVelocity.yAxis * normalizedCollisionVector.yAxis;
+
+      if (speed < 0) {
+        break;
+      }
+    }    
+
+    }
+}
+
 }
 
 class GameAsset {
@@ -159,10 +189,10 @@ class GameAsset {
 class GamePlinkoPin extends GameAsset {
   radius: number;
 
-
   constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
     super(positionX, positionY, velocityX, velocityY);
     this.radius = 5; 
+    
   }
 
   GeneratePin() {
@@ -178,10 +208,11 @@ class GamePlinkoPin extends GameAsset {
 
 class GamePuck extends GameAsset{
   coinPuck = PIXI.Sprite.from("./assets/Coin Pack/Coin9.png");
+  radius: number;
   
   constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
     super(positionX, positionY, velocityX, velocityY)
-    
+    this.radius = 25;
   }
   
   GeneratePuck() {
@@ -243,7 +274,7 @@ startButtonSprite.on("pointerdown", () => {
     document.getElementById("player-score")!.innerHTML = `Score : ${scoreState._totalPlayerScore}`;
     document.getElementById("player-coins")!.innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
 
-    setInterval(GameLoop, 1000 / 60);
+    setInterval(GameLoop, 1000 / 10);
   }
 });
 
@@ -266,6 +297,10 @@ function CreateStartButton() {
 function GameLoop() {
   asset.UpdatePosition();
   
+  board.DetectCollisions(asset);
+  console.log(asset);
+  
+
   if (asset.positionY > 375) {
       container.removeChild(asset);
   }
@@ -281,6 +316,8 @@ function CheckCircleIntersect(puckPositionX: number, puckPositionY: number, puck
 
   return distanceBetweenCircles <= Math.pow(puckRadius + plinkoPegRadius, 2);
 }
+
+
 
 // function MovePuckOnPath(path: string[]) {
 //   asset.GeneratePuck();
