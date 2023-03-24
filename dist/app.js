@@ -7,7 +7,8 @@ const app = new PIXI.Application({
 });
 document.body.appendChild(app.view);
 const container = new PIXI.Container();
-app.stage.addChild(container);
+const puckContainer = new PIXI.Container();
+app.stage.addChild(container, puckContainer);
 //prettier-ignore
 const gameBoardMap = [
     [' ', ' ', ' ', ' ', ' ', '0', ' ', ' ', ' ', ' ', ' '],
@@ -121,7 +122,6 @@ class GameBoard {
                 if (speed < 0) {
                     break;
                 }
-                // let impulse = 2 * ;
                 puck.velocityX -= (speed * normalizedCollisionVector.xAxis);
                 puck.velocityY -= (speed * normalizedCollisionVector.yAxis);
                 // plinkoPin.velocityX += (speed * normalizedCollisionVector.xAxis);
@@ -169,7 +169,7 @@ class GamePuck extends GameAsset {
             .beginFill(0xE33900 * Math.random() * 5)
             .drawCircle(this.positionX, this.positionY, this.radius)
             .endFill();
-        container.addChild(puck);
+        puckContainer.addChild(puck);
     }
     UpdatePosition(secondsPassed) {
         const gravity = 9.81;
@@ -185,11 +185,14 @@ class GamePuck extends GameAsset {
         this.positionX = 250;
         this.positionY = 100;
     }
+    RemovePuck() {
+    }
 }
 const board = new GameBoard(500, 600);
 board.SetUpGameBoard();
 const startButtonSprite = CreateStartButton();
 const asset = new GamePuck(250, 100, Math.random(), 1);
+// const asset = new GamePuck(250, 100, 0, 1);
 const scoreState = new GameScoreSystem(10, 0);
 startButtonSprite.on("pointerdown", () => {
     asset.ResetPostion();
@@ -209,9 +212,6 @@ startButtonSprite.on("pointerdown", () => {
         // MovePuckOnPath(path);
         document.getElementById("player-score").innerHTML = `Score : ${scoreState._totalPlayerScore}`;
         document.getElementById("player-coins").innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
-        // setInterval(() => { 
-        //   GameLoop() 
-        // }, 1000 / 30);
         requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
     }
 });
@@ -237,14 +237,14 @@ function GameLoop(timeStamp) {
         asset.UpdatePosition(secondsPassed);
         board.DetectCollisions(asset);
         console.log(asset);
-        container.removeChild(asset);
+        puckContainer.removeChildren();
         asset.GeneratePuck();
     }
     requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
 }
 function CheckCircleIntersect(puckPositionX, puckPositionY, puckRadius, plinkoPegPositionX, plinkoPegPositionY, plinkoPegRadius) {
-    let distanceBetweenCircles = Math.pow(puckPositionX - plinkoPegPositionX, 2) + Math.pow(puckPositionY - plinkoPegPositionY, 2);
-    return distanceBetweenCircles <= Math.pow(puckRadius + plinkoPegRadius, 2);
+    let distanceBetweenCircles = Math.sqrt(Math.pow(puckPositionX - plinkoPegPositionX, 2) + Math.pow(puckPositionY - plinkoPegPositionY, 2));
+    return distanceBetweenCircles <= puckRadius + plinkoPegRadius;
 }
 // function MovePuckOnPath(path: string[]) {
 //   asset.GeneratePuck();

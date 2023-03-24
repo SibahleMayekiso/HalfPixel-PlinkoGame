@@ -11,7 +11,8 @@ const app = new PIXI.Application({
 document.body.appendChild(app.view);
 
 const container = new PIXI.Container();
-app.stage.addChild(container);
+const puckContainer = new PIXI.Container();
+app.stage.addChild(container, puckContainer);
 
 //prettier-ignore
 const gameBoardMap = [
@@ -176,7 +177,6 @@ class GameBoard {
         break;
       }
       
-      // let impulse = 2 * ;
       puck.velocityX -= (speed * normalizedCollisionVector.xAxis);
       puck.velocityY -= (speed * normalizedCollisionVector.yAxis);
       // plinkoPin.velocityX += (speed * normalizedCollisionVector.xAxis);
@@ -247,7 +247,7 @@ class GamePuck extends GameAsset{
       .drawCircle(this.positionX,this.positionY, this.radius)
       .endFill();
 
-    container.addChild(puck);
+    puckContainer.addChild(puck);
   }
 
   UpdatePosition(secondsPassed: number) {
@@ -268,6 +268,10 @@ class GamePuck extends GameAsset{
     this.positionX = 250;
     this.positionY = 100;
   }
+
+  RemovePuck(){
+
+  }
 }
 
 const board = new GameBoard(500, 600);
@@ -276,6 +280,7 @@ board.SetUpGameBoard();
 const startButtonSprite = CreateStartButton();
 
 const asset = new GamePuck(250, 100, Math.random(), 1);
+// const asset = new GamePuck(250, 100, 0, 1);
 const scoreState = new GameScoreSystem(10, 0)
 
 
@@ -304,10 +309,6 @@ startButtonSprite.on("pointerdown", () => {
     document.getElementById("player-score")!.innerHTML = `Score : ${scoreState._totalPlayerScore}`;
     document.getElementById("player-coins")!.innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
     
-    // setInterval(() => { 
-    //   GameLoop() 
-    // }, 1000 / 30);
-
     requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
   }
 });
@@ -346,7 +347,7 @@ function GameLoop(timeStamp: number) {
     board.DetectCollisions(asset);
     console.log(asset);
     
-    container.removeChild(asset);
+    puckContainer.removeChildren();
 
     asset.GeneratePuck();
   }
@@ -354,9 +355,9 @@ function GameLoop(timeStamp: number) {
 }
 
 function CheckCircleIntersect(puckPositionX: number, puckPositionY: number, puckRadius: number, plinkoPegPositionX: number, plinkoPegPositionY: number, plinkoPegRadius: number) {
-  let distanceBetweenCircles = Math.pow(puckPositionX - plinkoPegPositionX, 2) + Math.pow(puckPositionY - plinkoPegPositionY, 2);
+  let distanceBetweenCircles = Math.sqrt(Math.pow(puckPositionX - plinkoPegPositionX, 2) + Math.pow(puckPositionY - plinkoPegPositionY, 2));
 
-  return distanceBetweenCircles <= Math.pow(puckRadius + plinkoPegRadius, 2);
+  return distanceBetweenCircles <= puckRadius + plinkoPegRadius;
 }
 
 
