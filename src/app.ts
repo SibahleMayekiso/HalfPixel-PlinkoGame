@@ -96,7 +96,7 @@ function GameLoop(timeStamp: number) {
   else{
     asset.UpdatePosition(secondsPassed);
   
-    board.DetectCollisions(asset);
+    board.DetectCircleOnCirclceCollisions(asset);
     console.log(asset);
     
     puckContainer.removeChildren();

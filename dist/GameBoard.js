@@ -37,7 +37,7 @@ export class GameBoard {
             });
         });
     }
-    DetectCollisions(puck) {
+    DetectCircleOnCirclceCollisions(puck) {
         puck.isColliding = false;
         this.plinkoPins.forEach((element) => element.isColliding = false);
         for (let index = 0; index < this.plinkoPins.length; index++) {

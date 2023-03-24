@@ -56,7 +56,7 @@ export class GameBoard {
     });
   }
 
-  DetectCollisions(puck: GamePuck) {
+  DetectCircleOnCirclceCollisions(puck: GamePuck) {
     puck.isColliding = false;
 
     this.plinkoPins.forEach((element) => element.isColliding = false);

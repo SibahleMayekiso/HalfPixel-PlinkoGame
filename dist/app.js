@@ -67,7 +67,7 @@ function GameLoop(timeStamp) {
     }
     else {
         asset.UpdatePosition(secondsPassed);
-        board.DetectCollisions(asset);
+        board.DetectCircleOnCirclceCollisions(asset);
         console.log(asset);
         puckContainer.removeChildren();
         asset.GeneratePuck();
