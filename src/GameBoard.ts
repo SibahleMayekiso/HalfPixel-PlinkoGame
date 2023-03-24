@@ -69,7 +69,7 @@ export class GameBoard {
         puck.isColliding = true;
         plinkoPin.isColliding = true;
 
-        let collisionVector = { xAxis: puck.positionX - plinkoPin.positionX, yAxis: puck.positionY - plinkoPin.positionY };
+        let collisionVector = { xAxis: plinkoPin.positionX - puck.positionX, yAxis: plinkoPin.positionY - puck.positionY };
         let distance = Math.sqrt(Math.pow(puck.positionX - plinkoPin.positionX, 2) + Math.pow(puck.positionY - plinkoPin.positionY, 2));
 
         let normalizedCollisionVector = { xAxis: collisionVector.xAxis / distance, yAxis: collisionVector.yAxis / distance };
@@ -78,11 +78,11 @@ export class GameBoard {
         let speed = relativeVectorVelocity.xAxis * normalizedCollisionVector.xAxis + relativeVectorVelocity.yAxis * normalizedCollisionVector.yAxis;
 
         console.log(`Calculation results:\n 
-      Collision Vector: x: ${collisionVector.xAxis} y: ${collisionVector.yAxis}\n
-      Distance: ${distance}\n
-      Normalized Collision Vector: x: ${normalizedCollisionVector.xAxis} y: ${normalizedCollisionVector.yAxis}\n
-      Relative Vector Velocity: x: ${relativeVectorVelocity.xAxis} y: ${relativeVectorVelocity.yAxis}\n
-      Speed: ${speed}`);
+        Collision Vector: x: ${collisionVector.xAxis} y: ${collisionVector.yAxis}\n
+        Distance: ${distance}\n
+        Normalized Collision Vector: x: ${normalizedCollisionVector.xAxis} y: ${normalizedCollisionVector.yAxis}\n
+        Relative Vector Velocity: x: ${relativeVectorVelocity.xAxis} y: ${relativeVectorVelocity.yAxis}\n
+        Speed: ${speed}`);
 
         if (speed < 0) {
           break;
