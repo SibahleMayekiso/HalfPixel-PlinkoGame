@@ -84,6 +84,7 @@ class GameBoard {
                         break;
                     case "*":
                         const plinkoPin = new GamePlinkoPin(50 * columnIndex, 100 + 50 * rowIndex, 0, 0);
+                        console.log(plinkoPin);
                         this.plinkoPins.push(plinkoPin);
                         plinkoPin.GeneratePin();
                         break;
@@ -111,9 +112,20 @@ class GameBoard {
                 let normalizedCollisionVector = { xAxis: collisionVector.xAxis / distance, yAxis: collisionVector.yAxis / distance };
                 let relativeVectorVelocity = { xAxis: puck.velocityX - plinkoPin.velocityX, yAxis: puck.velocityY - plinkoPin.velocityY };
                 let speed = relativeVectorVelocity.xAxis * normalizedCollisionVector.xAxis + relativeVectorVelocity.yAxis * normalizedCollisionVector.yAxis;
+                console.log(`Calculation results:\n 
+      Collision Vector: x: ${collisionVector.xAxis} y: ${collisionVector.yAxis}\n
+      Distance: ${distance}\n
+      Normalized Collision Vector: x: ${normalizedCollisionVector.xAxis} y: ${normalizedCollisionVector.yAxis}\n
+      Relative Vector Velocity: x: ${relativeVectorVelocity.xAxis} y: ${relativeVectorVelocity.yAxis}\n
+      Speed: ${speed}`);
                 if (speed < 0) {
                     break;
                 }
+                // let impulse = 2 * ;
+                puck.velocityX -= (speed * normalizedCollisionVector.xAxis);
+                puck.velocityY -= (speed * normalizedCollisionVector.yAxis);
+                // plinkoPin.velocityX += (speed * normalizedCollisionVector.xAxis);
+                // plinkoPin.velocityY += (speed * normalizedCollisionVector.yAxis);
             }
         }
     }
@@ -154,14 +166,16 @@ class GamePuck extends GameAsset {
         // this.coinPuck.y = this.positionY;
         // container.addChild(this.coinPuck);
         const puck = new PIXI.Graphics()
-            .beginFill(0xE33900)
+            .beginFill(0xE33900 * Math.random() * 5)
             .drawCircle(this.positionX, this.positionY, this.radius)
             .endFill();
         container.addChild(puck);
     }
-    UpdatePosition() {
+    UpdatePosition(secondsPassed) {
+        const gravity = 9.81;
         this.positionX += this.velocityX;
         this.positionY += this.velocityY;
+        this.velocityY += gravity * secondsPassed;
     }
     // MovePosition() {
     //   this.coinPuck.x = this.positionX;
@@ -175,11 +189,11 @@ class GamePuck extends GameAsset {
 const board = new GameBoard(500, 600);
 board.SetUpGameBoard();
 const startButtonSprite = CreateStartButton();
-const asset = new GamePuck(250, 100, 0, 1);
+const asset = new GamePuck(250, 100, Math.random(), 1);
 const scoreState = new GameScoreSystem(10, 0);
 startButtonSprite.on("pointerdown", () => {
     asset.ResetPostion();
-    asset.GeneratePuck();
+    // asset.GeneratePuck();
     if (scoreState._totalPlayerPoints <= 0) {
         container.removeChild(asset);
         console.log("Game Over! Insufficient Coins");
@@ -195,9 +209,10 @@ startButtonSprite.on("pointerdown", () => {
         // MovePuckOnPath(path);
         document.getElementById("player-score").innerHTML = `Score : ${scoreState._totalPlayerScore}`;
         document.getElementById("player-coins").innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
-        setInterval(() => {
-            GameLoop();
-        }, 1000 / 60);
+        // setInterval(() => { 
+        //   GameLoop() 
+        // }, 1000 / 30);
+        requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
     }
 });
 function CreateStartButton() {
@@ -209,18 +224,23 @@ function CreateStartButton() {
     container.addChild(startButtonSprite);
     return startButtonSprite;
 }
-function GameLoop() {
-    asset.UpdatePosition();
-    board.DetectCollisions(asset);
-    console.log(asset);
-    // asset.GeneratePuck();
+let oldTimeStamp = 0;
+let secondsPassed = 0;
+function GameLoop(timeStamp) {
+    secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+    oldTimeStamp = timeStamp;
+    console.log(secondsPassed);
     if (asset.positionY > 350) {
         container.removeChild(asset);
     }
     else {
+        asset.UpdatePosition(secondsPassed);
+        board.DetectCollisions(asset);
+        console.log(asset);
         container.removeChild(asset);
         asset.GeneratePuck();
     }
+    requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
 }
 function CheckCircleIntersect(puckPositionX, puckPositionY, puckRadius, plinkoPegPositionX, plinkoPegPositionY, plinkoPegRadius) {
     let distanceBetweenCircles = Math.pow(puckPositionX - plinkoPegPositionX, 2) + Math.pow(puckPositionY - plinkoPegPositionY, 2);
