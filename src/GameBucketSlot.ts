@@ -1,15 +1,23 @@
 import * as PIXI from "../node_modules/pixi.js/dist/pixi.mjs";
 import { container } from "./app.js";
+import { GamePuck } from "./GamePuck.js";
 
 export class GameBucketSlot {
   positionX: number;
   positionY: number;
+  bucketWidth: number;
+  bucketHeight: number;
   bucketPoints: number;
+  isColliding: boolean;
 
   constructor(positionX: number, positionY: number) {
     this.positionX = positionX;
     this.positionY = positionY;
     this.bucketPoints = 0;
+    this.bucketWidth = 75;
+    this.bucketHeight = 50;
+
+    this.isColliding = false
   }
 
   GetBucketPoints() {
@@ -26,11 +34,12 @@ export class GameBucketSlot {
         const bucketTen = PIXI.Sprite.from("/assets/BucketAssets/10PointsBucketSlot.png");
 
         bucketTen.anchor.set(0.5);
-        bucketTen.width = 75;
-        bucketTen.height = 50;
+        bucketTen.width = this.bucketWidth;
+        bucketTen.height = this.bucketHeight;
         bucketTen.x = this.positionX;
         bucketTen.y = this.positionY;
 
+        // this.buckets.push(bucketTen);
         container.addChild(bucketTen);
 
         break;
@@ -40,11 +49,12 @@ export class GameBucketSlot {
         const bucketFive = PIXI.Sprite.from("/assets/BucketAssets/5PointsBucketSlot.png");
 
         bucketFive.anchor.set(0.5);
-        bucketFive.width = 75;
-        bucketFive.height = 50;
+        bucketFive.width = this.bucketWidth;
+        bucketFive.height = this.bucketHeight;
         bucketFive.x = this.positionX;
         bucketFive.y = this.positionY;
 
+        // this.buckets.push(bucketFive);
         container.addChild(bucketFive);
 
         break;
@@ -54,11 +64,12 @@ export class GameBucketSlot {
         const bucketTwo = PIXI.Sprite.from("/assets/BucketAssets/2PointsBucketSlot.png");
 
         bucketTwo.anchor.set(0.5);
-        bucketTwo.width = 75;
-        bucketTwo.height = 50;
+        bucketTwo.width = this.bucketWidth;
+        bucketTwo.height = this.bucketHeight;
         bucketTwo.x = this.positionX;
         bucketTwo.y = this.positionY;
 
+        // this.buckets.push(bucketTwo);
         container.addChild(bucketTwo);
 
         break;

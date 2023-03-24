@@ -61,22 +61,19 @@ let secondsPassed = 0;
 function GameLoop(timeStamp) {
     secondsPassed = (timeStamp - oldTimeStamp) / 1000;
     oldTimeStamp = timeStamp;
-    console.log(secondsPassed);
+    // console.log(secondsPassed);
     if (asset.positionY > 350) {
         container.removeChild(asset);
     }
     else {
         asset.UpdatePosition(secondsPassed);
         board.DetectCircleOnCirclceCollisions(asset);
-        console.log(asset);
+        board.DetectCircleOnSquareCollisions(asset);
+        // console.log(asset);
         puckContainer.removeChildren();
         asset.GeneratePuck();
     }
     requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
-}
-export function CheckCircleIntersect(puckPositionX, puckPositionY, puckRadius, plinkoPegPositionX, plinkoPegPositionY, plinkoPegRadius) {
-    let distanceBetweenCircles = Math.sqrt(Math.pow(puckPositionX - plinkoPegPositionX, 2) + Math.pow(puckPositionY - plinkoPegPositionY, 2));
-    return distanceBetweenCircles <= puckRadius + plinkoPegRadius;
 }
 // function MovePuckOnPath(path: string[]) {
 //   asset.GeneratePuck();

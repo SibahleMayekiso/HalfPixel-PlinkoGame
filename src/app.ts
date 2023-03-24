@@ -88,7 +88,7 @@ function GameLoop(timeStamp: number) {
   secondsPassed = (timeStamp - oldTimeStamp) / 1000;
   oldTimeStamp = timeStamp;
 
-  console.log(secondsPassed);
+  // console.log(secondsPassed);
   
   if (asset.positionY > 350) {
       container.removeChild(asset);
@@ -97,19 +97,14 @@ function GameLoop(timeStamp: number) {
     asset.UpdatePosition(secondsPassed);
   
     board.DetectCircleOnCirclceCollisions(asset);
-    console.log(asset);
+    board.DetectCircleOnSquareCollisions(asset);
+    // console.log(asset);
     
     puckContainer.removeChildren();
 
     asset.GeneratePuck();
   }
   requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
-}
-
-export function CheckCircleIntersect(puckPositionX: number, puckPositionY: number, puckRadius: number, plinkoPegPositionX: number, plinkoPegPositionY: number, plinkoPegRadius: number) {
-  let distanceBetweenCircles = Math.sqrt(Math.pow(puckPositionX - plinkoPegPositionX, 2) + Math.pow(puckPositionY - plinkoPegPositionY, 2));
-
-  return distanceBetweenCircles <= puckRadius + plinkoPegRadius;
 }
 
 
