@@ -22,8 +22,8 @@ export class GamePuck extends GameAsset {
     }
     UpdatePosition(secondsPassed) {
         const gravity = 9.81;
-        this.positionX += this.velocityX;
-        this.positionY += this.velocityY;
+        this.positionX += this.velocityX * secondsPassed;
+        this.positionY += this.velocityY * secondsPassed;
         this.velocityY += gravity * secondsPassed;
     }
     // MovePosition() {
