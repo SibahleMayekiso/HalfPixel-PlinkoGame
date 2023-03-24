@@ -1,4 +1,4 @@
-import { GameScoreSystem } from "./ScoreSystem";
+import { GameScoreSystem } from "./ScoreSystem.js";
 describe("UpdateScore", () => {
     test("should return 1 given UpdateScore(0,1)", () => {
         //Arrange

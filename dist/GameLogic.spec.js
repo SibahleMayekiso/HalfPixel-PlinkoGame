@@ -1,4 +1,4 @@
-import { PreDetermineBucketToLandIn } from "./GameLogic";
+import { PreDetermineBucketToLandIn } from "./GameLogic.js";
 describe("PreDetermineBucketToLandIn", () => {
     test("should return a number between 1 and 5", () => {
         //Arrange
