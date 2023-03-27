@@ -80,12 +80,6 @@ export class GameBoard {
                 let normalizedCollisionVector = { xAxis: collisionVector.xAxis / distance, yAxis: collisionVector.yAxis / distance };
                 let relativeVectorVelocity = { xAxis: puck.velocityX, yAxis: puck.velocityY };
                 let speed = relativeVectorVelocity.xAxis * normalizedCollisionVector.xAxis + relativeVectorVelocity.yAxis * normalizedCollisionVector.yAxis;
-                // console.log(`Calculation results:\n 
-                // Collision Vector: x: ${collisionVector.xAxis} y: ${collisionVector.yAxis}\n
-                // Distance: ${distance}\n
-                // Normalized Collision Vector: x: ${normalizedCollisionVector.xAxis} y: ${normalizedCollisionVector.yAxis}\n
-                // Relative Vector Velocity: x: ${relativeVectorVelocity.xAxis} y: ${relativeVectorVelocity.yAxis}\n
-                // Speed: ${speed}`);
                 console.log(`You just scored: ${bucket.bucketPoints} points`);
                 if (speed < 0) {
                     break;
