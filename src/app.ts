@@ -60,9 +60,7 @@ startButtonSprite.on("pointerdown", () => {
 });
 
 function CreateStartButton() {
-  const startButtonSprite = PIXI.Sprite.from(
-    "./gamePucks/vecteezy_start-button.png"
-  );
+  const startButtonSprite = PIXI.Sprite.from("./assets/vecteezy_start-button.png");
 
   startButtonSprite.width = 150;
   startButtonSprite.height = 75;
