@@ -22,7 +22,7 @@ export const gameBoardMap = [
 const board = new GameBoard(500, 600);
 board.SetUpGameBoard();
 const startButtonSprite = CreateStartButton();
-const asset = new GamePuck(250, 100, Math.random(), 1);
+const asset = new GamePuck(250, 100, Math.random() - 0.5, 1);
 // const asset = new GamePuck(250, 100, 0, 15);
 startButtonSprite.on("pointerdown", () => {
     asset.ResetPostion();
