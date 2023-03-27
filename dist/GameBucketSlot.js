@@ -23,7 +23,6 @@ export class GameBucketSlot {
                 bucketTen.height = this.bucketHeight;
                 bucketTen.x = this.positionX;
                 bucketTen.y = this.positionY;
-                // this.buckets.push(bucketTen);
                 container.addChild(bucketTen);
                 break;
             case 2:
@@ -34,7 +33,6 @@ export class GameBucketSlot {
                 bucketFive.height = this.bucketHeight;
                 bucketFive.x = this.positionX;
                 bucketFive.y = this.positionY;
-                // this.buckets.push(bucketFive);
                 container.addChild(bucketFive);
                 break;
             case 0:
@@ -45,7 +43,6 @@ export class GameBucketSlot {
                 bucketTwo.height = this.bucketHeight;
                 bucketTwo.x = this.positionX;
                 bucketTwo.y = this.positionY;
-                // this.buckets.push(bucketTwo);
                 container.addChild(bucketTwo);
                 break;
             default:

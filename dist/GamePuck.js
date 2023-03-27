@@ -21,12 +21,14 @@ export class GamePuck extends GameAsset {
         this.positionX += this.velocityX * secondsPassed;
         this.positionY += this.velocityY * secondsPassed;
         this.velocityY += gravity * secondsPassed;
-        console.log(this.velocityY);
     }
     ResetPostion() {
         this.positionX = 250;
         this.positionY = 100;
     }
     RemovePuck() {
+        this.velocityY = 0;
+        this.positionX = 1000;
+        this.positionY = 1000;
     }
 }

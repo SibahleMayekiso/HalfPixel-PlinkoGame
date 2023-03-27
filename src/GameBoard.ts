@@ -1,6 +1,6 @@
 import * as PIXI from "../node_modules/pixi.js/dist/pixi.mjs";
 import { GameBucketSlot } from "./GameBucketSlot.js";
-import { gameBoardMap, container} from "./app.js";
+import { gameBoardMap, container, puckContainer} from "./app.js";
 import { GamePuck } from "./GamePuck.js";
 import { GamePlinkoPin } from "./GamePlinkoPin.js";
 import { GameScoreSystem } from "./ScoreSystem.js";
@@ -11,8 +11,6 @@ export class GameBoard {
   plinkoPins: GamePlinkoPin[];
   buckets: GameBucketSlot[];
   scoreState: GameScoreSystem;
-  testX = 0;
-  testY = 0;
 
   constructor(width: number, height: number) {
     this._width = width;
@@ -107,9 +105,12 @@ export class GameBoard {
       }
 
       if (puck.isColliding && bucket.isColliding) {
+        // puck.velocityX = 0;
+        // puck.velocityY = 0;
+        puck.RemovePuck();
         let currentScore = this.scoreState.GetCurrentScore()
         this.scoreState.UpdateScore(currentScore, index + 1);
-        // console.log(`You just scored: ${this.scoreState._totalPlayerScore} points`);
+        console.log(bucket);
         document.getElementById("player-score")!.innerHTML = `Score : ${this.scoreState.GetCurrentScore()}`;
         break;
       }
@@ -123,25 +124,32 @@ export class GameBoard {
   }
 
   CheckCircleRectIntersect(puckPositionX: number, puckPositionY: number, puckRadius: number, bucketPositionX: number, bucketPositionY: number, bucketWidth: number, bucketHeight: number) {
+    let initialX = puckPositionX;
+    let initialY = puckPositionY;
+    
     if (puckPositionX < bucketPositionX) {
-      this.testX = bucketPositionX;
+      initialX = bucketPositionX;
     }
-    else if(puckPositionX > bucketPositionX + bucketHeight){
-      this.testX = bucketPositionX + bucketHeight;
+
+    if(puckPositionX > bucketPositionX + bucketWidth){
+      initialX = bucketPositionX + bucketWidth;
     }
 
     if (puckPositionY < bucketPositionY) {
-      this.testY = bucketPositionY;
-    }
-    else if(puckPositionY > bucketPositionY + bucketHeight){
-      this.testY = bucketPositionY + bucketHeight;
+      initialY = bucketPositionY;
     }
 
-    let distanceXAxis = puckPositionX - this.testX;
-    let distanceYAxis = puckPositionY - this.testY;
+    if(puckPositionY > bucketPositionY + bucketHeight){
+      initialY = bucketPositionY + bucketHeight;
+    }
+
+    let distanceXAxis = puckPositionX - initialX;
+    let distanceYAxis = puckPositionY - initialY;
 
     let distanceBetweenPuckAndBucket = Math.sqrt(Math.pow(distanceXAxis, 2) + Math.pow(distanceYAxis, 2));
 
+    //console.log(distanceBetweenPuckAndBucket);
+    
     return distanceBetweenPuckAndBucket <= puckRadius;
   }
 }

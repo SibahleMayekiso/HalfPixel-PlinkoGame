@@ -39,7 +39,6 @@ export class GameBucketSlot {
         bucketTen.x = this.positionX;
         bucketTen.y = this.positionY;
 
-        // this.buckets.push(bucketTen);
         container.addChild(bucketTen);
 
         break;
@@ -54,7 +53,6 @@ export class GameBucketSlot {
         bucketFive.x = this.positionX;
         bucketFive.y = this.positionY;
 
-        // this.buckets.push(bucketFive);
         container.addChild(bucketFive);
 
         break;
@@ -69,7 +67,6 @@ export class GameBucketSlot {
         bucketTwo.x = this.positionX;
         bucketTwo.y = this.positionY;
 
-        // this.buckets.push(bucketTwo);
         container.addChild(bucketTwo);
 
         break;

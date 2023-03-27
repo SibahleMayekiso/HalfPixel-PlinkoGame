@@ -38,7 +38,7 @@ startButtonSprite.on("pointerdown", () => {
   asset.ResetPostion();
 
   if (board.scoreState._totalPlayerPoints <= 0) {
-    container.removeChild(asset);
+    // container.removeChild(asset);
     console.log("Game Over! Insufficient Coins");
     document.getElementById("player-coins")!.style.color = "red";
     
@@ -81,12 +81,10 @@ let oldTimeStamp = 0;
 let secondsPassed = 0;
 
 function GameLoop(timeStamp: number) {
-  secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+  secondsPassed = (timeStamp - oldTimeStamp) / 500;
   oldTimeStamp = timeStamp;
 
-  console.log(`Tick: ${secondsPassed}`);
-  
-  if (asset.positionY > 350) {
+  if (asset.positionY > 1000) {
       container.removeChild(asset);
   }
   else{
@@ -101,8 +99,6 @@ function GameLoop(timeStamp: number) {
   }
   requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
 }
-
-
 
 // function MovePuckOnPath(path: string[]) {
 //   asset.GeneratePuck();
