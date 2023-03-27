@@ -5,6 +5,8 @@ export class GamePlinkoPin extends GameAsset {
     constructor(positionX, positionY, velocityX, velocityY) {
         super(positionX, positionY, velocityX, velocityY);
         this.radius = 5;
+        this.restitution = 0.5;
+        this.mass = 75;
     }
     GeneratePin() {
         const pin = new PIXI.Graphics()

@@ -5,11 +5,14 @@ import { container } from "./app.js";
 
 export class GamePlinkoPin extends GameAsset {
   radius: number;
+  restitution: number;
+  mass: number
 
   constructor(positionX: number, positionY: number, velocityX: number, velocityY: number) {
     super(positionX, positionY, velocityX, velocityY);
     this.radius = 5;
-
+    this.restitution = 0.5;
+    this.mass = 75;
   }
 
   GeneratePin() {

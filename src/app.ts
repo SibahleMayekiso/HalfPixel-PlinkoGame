@@ -22,7 +22,7 @@ export const gameBoardMap = [
   [' ', ' ', ' ', '*', ' ', '*', ' ', '*', ' ', ' ', ' '],
   [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
   [' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' '],
-  [' ', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', ' '],
+  ['*', ' ', '*', ' ', '*', ' ', '*', ' ', '*', ' ', '*'],
   [' ', '_', ' ', '_', ' ', '_', ' ', '_', ' ', '_', ' '],
 ];
 
@@ -31,17 +31,13 @@ board.SetUpGameBoard();
 
 const startButtonSprite = CreateStartButton();
 
-const asset = new GamePuck(250, 100, Math.random(), 150);
+const asset = new GamePuck(250, 100, Math.random(), 1);
 // const asset = new GamePuck(250, 100, 0, 15);
-const scoreState = new GameScoreSystem(10, 0)
-
 
 startButtonSprite.on("pointerdown", () => {
   asset.ResetPostion();
 
-  // asset.GeneratePuck();
-
-  if (scoreState._totalPlayerPoints <= 0) {
+  if (board.scoreState._totalPlayerPoints <= 0) {
     container.removeChild(asset);
     console.log("Game Over! Insufficient Coins");
     document.getElementById("player-coins")!.style.color = "red";
@@ -52,14 +48,14 @@ startButtonSprite.on("pointerdown", () => {
     // const bucketNumber = PreDetermineBucketToLandIn();
     // const path = CalculateNavigationPath(bucketNumber);
     
-    let currentScore = scoreState.GetCurrentScore()
+    // let currentScore = board.scoreState.GetCurrentScore()
     // scoreState.UpdateScore(currentScore, bucketNumber);
-    scoreState.UpdatePoints();
+    board.scoreState.UpdatePoints();
 
     // MovePuckOnPath(path);
     
-    document.getElementById("player-score")!.innerHTML = `Score : ${scoreState._totalPlayerScore}`;
-    document.getElementById("player-coins")!.innerHTML = `Coins : ${scoreState._totalPlayerPoints}`;
+    document.getElementById("player-score")!.innerHTML = `Score : ${board.scoreState._totalPlayerScore}`;
+    document.getElementById("player-coins")!.innerHTML = `Coins : ${board.scoreState._totalPlayerPoints}`;
     
     requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
   }
@@ -88,7 +84,7 @@ function GameLoop(timeStamp: number) {
   secondsPassed = (timeStamp - oldTimeStamp) / 1000;
   oldTimeStamp = timeStamp;
 
-  // console.log(secondsPassed);
+  console.log(`Tick: ${secondsPassed}`);
   
   if (asset.positionY > 350) {
       container.removeChild(asset);
@@ -96,9 +92,8 @@ function GameLoop(timeStamp: number) {
   else{
     asset.UpdatePosition(secondsPassed);
   
-    board.DetectCircleOnCirclceCollisions(asset);
     board.DetectCircleOnSquareCollisions(asset);
-    // console.log(asset);
+    board.DetectCircleOnCirclceCollisions(asset);
     
     puckContainer.removeChildren();
 

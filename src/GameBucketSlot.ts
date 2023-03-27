@@ -14,7 +14,7 @@ export class GameBucketSlot {
     this.positionX = positionX;
     this.positionY = positionY;
     this.bucketPoints = 0;
-    this.bucketWidth = 75;
+    this.bucketWidth = 100;
     this.bucketHeight = 50;
 
     this.isColliding = false
