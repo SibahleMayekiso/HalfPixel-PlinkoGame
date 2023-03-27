@@ -38,7 +38,6 @@ startButtonSprite.on("pointerdown", () => {
   asset.ResetPostion();
 
   if (board.scoreState._totalPlayerPoints <= 0) {
-    // container.removeChild(asset);
     console.log("Game Over! Insufficient Coins");
     document.getElementById("player-coins")!.style.color = "red";
     
