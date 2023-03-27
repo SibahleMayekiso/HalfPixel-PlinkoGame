@@ -13,12 +13,6 @@ export class GamePuck extends GameAsset {
   }
 
   GeneratePuck() {
-    // this.coinPuck.anchor.set(0.5);
-    // this.coinPuck.width = 25;
-    // this.coinPuck.height = 25;
-    // this.coinPuck.x = this.positionX;
-    // this.coinPuck.y = this.positionY;
-    // container.addChild(this.coinPuck);
     const puck = new PIXI.Graphics()
       .beginFill(0xE33900 * Math.random() * 5)
       .drawCircle(this.positionX, this.positionY, this.radius)
@@ -36,15 +30,8 @@ export class GamePuck extends GameAsset {
     this.velocityY += gravity * secondsPassed;
   }
 
-  // MovePosition() {
-  //   this.coinPuck.x = this.positionX;
-  //   this.coinPuck.y = this.positionY;
-  // }
   ResetPostion() {
     this.positionX = 250;
     this.positionY = 100;
-  }
-
-  RemovePuck() {
   }
 }
