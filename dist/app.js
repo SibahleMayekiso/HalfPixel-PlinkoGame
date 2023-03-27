@@ -22,10 +22,9 @@ export const gameBoardMap = [
 const board = new GameBoard(500, 600);
 board.SetUpGameBoard();
 const startButtonSprite = CreateStartButton();
-const asset = new GamePuck(250, 100, Math.random() - 0.5, 1);
-// const asset = new GamePuck(250, 100, 0, 15);
+const gamePuck = new GamePuck(250, 100, Math.random() - 0.5, 1);
 startButtonSprite.on("pointerdown", () => {
-    asset.ResetPostion();
+    gamePuck.ResetPostion();
     if (board.scoreState._totalPlayerPoints <= 0) {
         console.log("Game Over! Insufficient Coins");
         document.getElementById("player-coins").style.color = "red";
@@ -44,7 +43,7 @@ startButtonSprite.on("pointerdown", () => {
     }
 });
 function CreateStartButton() {
-    const startButtonSprite = PIXI.Sprite.from("./assets/vecteezy_start-button.png");
+    const startButtonSprite = PIXI.Sprite.from("./gamePucks/vecteezy_start-button.png");
     startButtonSprite.width = 150;
     startButtonSprite.height = 75;
     startButtonSprite.x = 175;
@@ -57,26 +56,26 @@ let secondsPassed = 0;
 function GameLoop(timeStamp) {
     secondsPassed = (timeStamp - oldTimeStamp) / 500;
     oldTimeStamp = timeStamp;
-    if (asset.positionY > 1000) {
-        container.removeChild(asset);
+    if (gamePuck.positionY > 1000) {
+        container.removeChild(gamePuck);
     }
     else {
-        asset.UpdatePosition(secondsPassed);
-        board.DetectCircleOnSquareCollisions(asset);
-        board.DetectCircleOnCirclceCollisions(asset);
+        gamePuck.UpdatePosition(secondsPassed);
+        board.DetectCircleOnSquareCollisions(gamePuck);
+        board.DetectCircleOnCirclceCollisions(gamePuck);
         puckContainer.removeChildren();
-        asset.GeneratePuck();
+        gamePuck.GeneratePuck();
     }
     requestAnimationFrame((timeStamp) => GameLoop(timeStamp));
 }
 // function MovePuckOnPath(path: string[]) {
-//   asset.GeneratePuck();
+//   gamePuck.GeneratePuck();
 //   path.forEach((element, index) => {
 //     setTimeout(() => {
 //       let axisValues = element.split(";");
-//       asset.positionX = Number.parseInt(axisValues[0]);
-//       asset.positionY = Number.parseInt(axisValues[1]);
-//       asset.MovePosition();
+//       gamePuck.positionX = Number.parseInt(axisValues[0]);
+//       gamePuck.positionY = Number.parseInt(axisValues[1]);
+//       gamePuck.MovePosition();
 //     }, 1000 * index);
 //   });
 // }
